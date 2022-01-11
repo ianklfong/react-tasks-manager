@@ -1,0 +1,28 @@
+.container{
+    padding: 50px;
+    border: solid rgb(184, 184, 184);
+    border-radius: 10%;
+}
+/* input[type=text] {
+    border: none;
+    border-bottom: 2px solid rgb(247, 111, 111);
+  } */
+
+  input {
+      display: block;
+      width: 100%;
+      border: none;
+      border-bottom: 2px solid rgb(247, 111, 111);
+  
+  }
+
+
+.location-bar, .notes-bar, .date-bar{
+    display: inline-block;
+}
+
+img{
+    display: block;
+    height: 30px;
+    width: 30px
+}
