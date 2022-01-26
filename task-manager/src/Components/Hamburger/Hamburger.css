@@ -1,19 +1,24 @@
-/* 漢堡選單的外觀 */
-.openbtn {
-  font-size: 20px;
-  cursor: pointer;
-  background-color: transparent;
-  color: inherit;
-  padding: 10px 15px;
-  border: none;
-}
-/* 滑鼠停滯於漢堡選單上的外觀   */
-.openbtn:hover {
+/* 滑鼠停滯於漢堡選單上的外觀 */
+.openbtn:hover  {
   background-color:transparent;
+} 
+
+.sidebarBtn{
+display: flex;
+}
+
+.sidepanel .img {
+  font-size: 35px;
+  padding: 30px 15px;
+}
+
+.openbtn{
+margin-bottom: 80px;
+margin-left: 5px;
 }
 
 .sidepanel {
-  /* width為250px時顯示,預設0px為隱藏 */
+  /* when width is 250px,the sidepanel display,when that is 0px,display is none */
   position: fixed;
   /* element堆疊順序 */
   z-index: 1;
@@ -25,13 +30,13 @@
   overflow-x: hidden;
   /* 過渡動畫時間 */
   transition: 0.5s;
-  padding-top: 60px;
+  padding: 0px;
 }
 /* 內容外觀 */
-.sidepanel a, .dropbtn {
+.sidepanel a{
   background-color: #111;
   border: none;
-  padding: 8px 8px 8px 0px;
+  padding: 30px 8px 8px 0px;
   text-decoration: none;
   font-size: 25px;
   color: #818181;
@@ -39,19 +44,11 @@
   transition: 0.3s;
 }
 /* 滑鼠停滯於內容上的外觀   */
-.sidepanel a:hover, .dropdown:hover .dropbtn {
+.sidepanel a:hover, .sidebarBtn a:hover {
   color: #f1f1f1;
 }
 
-.sidepanel .closebtn {
-  /* 移出內容 */
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-}
-
-.dropdown {
+/* .dropdown {
 position: relative;
 display: inline-block;
 }
@@ -74,4 +71,4 @@ display: block;
 
 .dropdown-content a:hover {background-color: #ddd;}
 
-.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropdown-content {display: block;} */

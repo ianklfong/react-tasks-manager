@@ -5,59 +5,69 @@ export class Hamburger extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hamWidth: "0px",
+      hamWidth: "80px",
+      display: 'none'
     };
-    this.openHamburger = this.openHamburger.bind(this);
-    this.closeHamburger = this.closeHamburger.bind(this);
+    this.handleHamburger = this.handleHamburger.bind(this);
+    this.handleText = this.handleText.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
-  openHamburger() {
-    this.setState({ hamWidth: "45%" });
+  handleHamburger() {
+    if(this.state.hamWidth == '45%'){
+      this.setState({ hamWidth: "80px" });
+    }else{
+      this.setState({ hamWidth: "45%" });
+    }
   }
-  closeHamburger() {
-    this.setState({ hamWidth: "0px" });
+  handleText() {
+    if(this.state.display == ''){
+      this.setState({ display:'none' })
+    }else {
+      this.setState({display: ''})
+    }
+  }
+  handleChange() {
+    this.handleHamburger();
+    this.handleText();
   }
   render() {
     return (
       <div>
-        <button className="openbtn" onClick={this.openHamburger}>
-          ☰
-        </button>
         <div
           id="mySidepanel"
           className="sidepanel"
           style={{ width: this.state.hamWidth }}
         >
+          {/* <button className="openbtn" onClick={this.openHamburger}>
+            ☰
+          </button> */}
           <a
             href="javascript:void(0)"
-            className="closebtn"
-            onClick={this.closeHamburger}
-            value="x"
+            className="openbtn img"
+            onClick={this.handleChange}
+            value="☰"
           >
-            ×
+            ☰
           </a>
-          <a href="#" value="main">
-            Main
-          </a>
-          <a href="#" value="today">
-            Today
-          </a>
-          <a href="#" value="scheduled">
-            Scheduled
-          </a>
-          <a href="#" value="allTasks">
-            All Tasks
-          </a>
-          <a href="#" value="starred">
-            Starred
-          </a>
-          <div className="dropdown">
-            <button className="dropbtn">Dropdown</button>
-            <div className="dropdown-content">
-              <a href="#">Link 1</a>
-              <a href="#">Link 2</a>
-              <a href="#">Link 3</a>
-            </div>
+          <div className="sidebarBtn">
+            <a href="#" className="fas fa-home img"></a>
+            <a href="#" value="main" style={{ display: this.state.display}} className={this.state.display ? 'none' : ''}>
+              Main
+            </a>
           </div>
+          <div className="sidebarBtn">
+            <a href="#" class="fas fa-tasks img"></a>
+            <a href="#" value="task" style={{ display: this.state.display}} className={this.state.display ? 'none' : ''}>
+              Task
+            </a>
+          </div>
+          <div className="sidebarBtn">
+            <a href="#" class="fas fa-calendar img"></a>
+            <a href="#" value="calendar" style={{ display: this.state.display}} className={this.state.display ? 'none' : ''}>
+              Calendar
+            </a>
+          </div>
+
         </div>
       </div>
     );

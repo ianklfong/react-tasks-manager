@@ -7,12 +7,34 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './TaskList.css';
 
 // import task component
-// import Task from '../Task/Task';
 import Task from '../Task/Task(Refactor)';
 
-export default function TaskList({ allTasks, removeDone }) {   
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+
+export default function TaskList({ allTasks, setAllTasks, removeDone }) {   
     //  draggable panes for individual taks
     //  const panes = allTasks.map((task, index) =><Pane key={index} defaultSize={{ width: '100%', height: 120 }}><div className="list-group-item"><Task task={task} /></div></Pane>)
+
+    const onDragEnd = result => {
+        const { destination, source, draggableId, type } = result;
+
+        if(!destination) {
+            return;
+        }
+
+        if(
+            destination.draggableId === source.draggableId &&
+            destination.index === source.index
+        ) {
+            return;
+        }
+
+        const newTasksOrder = Array.from(allTasks);
+        newTasksOrder.splice(source.index, 1);
+        newTasksOrder.splice(destination.index, 0, draggableId);
+
+        setAllTasks(newTasksOrder);
+    }
 
     return (
         <div className="row h-100">
@@ -43,15 +65,31 @@ export default function TaskList({ allTasks, removeDone }) {
                     {/* <!-- Start of main column --> */}
                     <div className="col mt-4 main-column">
                         {/* <!-- Start of the list --> */}
-                        <ul className="list-group list-group-flush w-100">
-                            {/* <!-- Task Item(s) --> */}
-                            <div>
-                                <div>
-                                    {allTasks.map(task => <li className="list-group-item"><Task task={task} /></li>)}
-                                </div>
-                            </div>
-
-                        </ul>
+                            <DragDropContext
+                                onDragEnd={onDragEnd}
+                            >
+                                <Droppable
+                                     droppableId="1"
+                                     type="task"
+                                >
+                                    {(provided, snapshot) => (
+                                             <div
+                                             {...provided.droppableProps}
+                                                ref={provided.innerRef}
+                                                isDraggingOver={snapshot.isDraggingOver}
+                                                // className="list-group list-group-flush w-100"
+                                                className="w-100"
+                                            >
+                                                {/* <!-- Task Item(s) --> */}
+                                                {allTasks.map((task, index) => (
+                                                    <Task task={task} index={index}/>
+                                                ))}
+                                                {provided.placeholder}
+                                            </div>
+                                            
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
                         {/* containers for draggable tasks panes */}
                         {/* <div>
                         <SortablePane direction="vertical" margin={100}>{panes}</SortablePane>

@@ -27,7 +27,7 @@ export default function App() {
 		setNewTask((prevNewTask) => ({
 			...prevNewTask,
 			[name]: value,
-			id: Date.now(),
+			id: Date.now().toString(),
 			done: false,
 			[note]: value,
 		})
@@ -54,8 +54,7 @@ export default function App() {
 		if (!newTask.title) {
 			alert('Please provide a title for your task');
 			return;
-		} else {
-			;
+		};
 			// shift new task in all tasks list (before previous task(s))
 			setAllTasks((prevAllTasks) => [
 				newTask,
@@ -65,7 +64,6 @@ export default function App() {
 			setNewTask({});
 			// toggle right column display
 			setRightCol(!rightCol);
-		}
 	}
 
 	const removeDone = (e) => {
@@ -98,6 +96,7 @@ export default function App() {
 							{/* <Welcome /> */}
 							<TaskList 
 								allTasks={allTasks}
+								setAllTasks={setAllTasks}
 								removeDone={removeDone}
 								/>
 						</div>

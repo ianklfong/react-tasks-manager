@@ -3,10 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import './Task.css'
 
-// const [button, setButton] = useState(true);
-// const [complete, setComplete] = useState(false);
+//import dnd
+import { Draggable } from 'react-beautiful-dnd';
 
-export default function Task({ task }) {
+export default function Task({ task, index }) {
     const details = [];
     const time = task.time
     const location = task.location
@@ -34,14 +34,24 @@ export default function Task({ task }) {
     }
 
     return (
-        <div>
-            {/* <!-- Start of item row --> */}
-            <div className="row task-card">
+        <Draggable
+            draggableId={task.id}
+            index={index}
+        >
+            {(provided,snapshot) => (
+            /* <!-- Start of item row --> */
+            <div
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                // isDraaging={snapshot.isDraaging}
+                className="row task-card"
+            >
                 {/* <!-- icon column --> */}
                 <div className="col-1">
                     {/* <!-- icon --> */}
                     <div className="mx-auto w-100 h-100">
-                      <i onClick={handleDone} className={done ? 'fas fa-check buttonFalse' : 'fas fa-check buttonTrue'}></i>
+                      <i onClick={handleDone} className={task.done ? 'fas fa-check buttonFalse' : 'fas fa-check buttonTrue'}></i>
                     </div>
                     {/* <i className="fas fa-check task-icon"></i> */}
                 </div>
@@ -50,7 +60,7 @@ export default function Task({ task }) {
                 <div className="col-10 task-description" id="testing">
                     {/* <!-- Start of Task row --> */}
                     <div className="row">
-                        <p name="name" className={'task-title' + (done ? ' complete ' : '')}>
+                        <p name="name" className={'task-title' + (task.done ? ' complete ' : '')}>
                         {/* Andison:<input name="name" type="text" class={'taskTitle' +(this.state.complete ? ' complete ' : '')} value={this.state.name} onChange={this.changeState} /> */}
                             {task.title}
                         </p>
@@ -69,6 +79,8 @@ export default function Task({ task }) {
                 </div>
                 {/* <!-- End of item row --> */}
             </div>
-        </div>
+
+            )}
+        </Draggable>
     )
 }
