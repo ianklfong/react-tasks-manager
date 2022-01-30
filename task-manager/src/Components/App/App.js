@@ -92,7 +92,7 @@ class App extends React.Component {
               {/* <!-- End of left column --> */}
 
               {/* Start of right column */}
-              <div className='col-md-6'>
+              <div className='col-md-6' data-testid="testing">
 
                 {this.state.rightColStatus && 
                 <AddTask  onClick={this.handleSubmit}

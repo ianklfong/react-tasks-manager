@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // import Boostrap
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -55,21 +55,21 @@ export default function App() {
 			alert('Please provide a title for your task');
 			return;
 		};
-			// shift new task in all tasks list (before previous task(s))
-			setAllTasks((prevAllTasks) => [
-				newTask,
-				...prevAllTasks],
-			);
-			// empty the value of newTask
-			setNewTask({});
-			// toggle right column display
-			setRightCol(!rightCol);
+		// shift new task in all tasks list (before previous task(s))
+		setAllTasks((prevAllTasks) => [
+			newTask,
+			...prevAllTasks],
+		);
+		// empty the value of newTask
+		setNewTask({});
+		// toggle right column display
+		setRightCol(!rightCol);
 	}
 
 	const removeDone = (e) => {
 		e.preventDefault();
 		setAllTasks(allTasks.filter(task => task.done === false))
-	  }
+	}
 
 	// const panes = allTasks.map((v, index) => (
 	// 	<Pane key={index} style={{backgroundColor:'red'}} defaultSize={{ width: '100%', height: 120 }}>
@@ -78,6 +78,20 @@ export default function App() {
 
 
 	// render
+
+	//store data in local storage with useEffect
+	
+	useEffect(() => {
+		const data = localStorage.getItem('testing-task-list');
+		setAllTasks(JSON.parse(data));
+		
+	}, [1])
+	
+	useEffect(() => {
+		localStorage.setItem('testing-task-list', JSON.stringify(allTasks))
+	})
+
+
 	return (
 		<div className="App wrapper">
 			<header>
@@ -94,11 +108,11 @@ export default function App() {
 						{/* Start of left column */}
 						<div className="col-md-6 d-none d-md-block">
 							{/* <Welcome /> */}
-							<TaskList 
+							<TaskList
 								allTasks={allTasks}
 								setAllTasks={setAllTasks}
 								removeDone={removeDone}
-								/>
+							/>
 						</div>
 						{/* End of left column */}
 						{/* Start of right column */}
