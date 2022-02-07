@@ -1,6 +1,12 @@
-import React from 'react';
+import React,{useState} from 'react';
 
-function TaskForm({ newTask, handleSubmit, handleChange}) {
+//database
+import {addDoc } from 'firebase/firestore'
+import {testCollectionRef} from '../db'
+
+
+function TaskForm({ newTask, handleSubmit, handleChange, updateDoc}) {
+
     return (
         <div id="taskForm" className="col-auto d-none d-lg-block">
 
@@ -24,6 +30,7 @@ function TaskForm({ newTask, handleSubmit, handleChange}) {
                                 maxLength="20"
                                 value={newTask.title || ""}
                                 onChange={handleChange}
+                                // onChange={(event) => setNewTitle(event.target.value)}
                                 style={{background: 0}}
                                 required
                             />
@@ -46,6 +53,7 @@ function TaskForm({ newTask, handleSubmit, handleChange}) {
                             placeholder="Write some notes..."
                             value={newTask.notes || ""}
                             onChange={handleChange}
+                            // onChange={(event) => setNewNotes(event.target.value)}
                         ></textarea>
                         <label htmlFor="lists">Lists</label>
                         <select
@@ -68,6 +76,8 @@ function TaskForm({ newTask, handleSubmit, handleChange}) {
                             style={{background: 0}}
                             value={newTask.date || ""}
                             onChange={handleChange}
+                            // onChange={(event) => setNewDate(event.target.value)}
+
                         />
 
                         <input
@@ -89,7 +99,7 @@ function TaskForm({ newTask, handleSubmit, handleChange}) {
                             value={newTask.location || ""}
                             onChange={handleChange}
                         />
-                        <input type="submit" value="+ Add Task"/>
+                        <input type="submit" value="+ Add Task" onClick={() => {updateDoc(); console.log('123')}}/>
                     </div>
                 </div>
             </form>

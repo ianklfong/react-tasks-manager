@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import $ from 'jquery';
 
 // import styled components
-import styled from'styled-components';
+import styled from 'styled-components';
 // import bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -21,6 +21,12 @@ import ListsPage from './ListsPage';
 
 import Main from './Main';
 
+//database
+import { collection, doc, getDocs, addDoc, deleteDoc, updateDoc } from 'firebase/firestore'
+import { testCollectionRef } from '../db'
+import { db } from '../firebase-config';
+
+
 
 const Body = styled.div`
   padding: 0;
@@ -35,10 +41,42 @@ const MainRow = styled.div`
 
 
 function App() {
+  // const allTasksRef = collection(db, "task")
 
-	// state of new task input
-	const [newTask, setNewTask] = useState({});
+  // useEffect(() => { 
+  //   const createTask = async () => {
+  //     // await addDoc(testCollectionRef, { title: newTask.title , notes: newTask.notes, date: newTask.Date});
+
+  //     await addDoc(testCollectionRef, {});}
+  //     createTask();
+  // }, [])
+
+
+  // state of new task input
+  const [newTask, setNewTask] = useState({});
   const [allTasks, setAllTasks] = useState(null);
+  
+
+  // upload to db 
+  const createTask = async () => {
+    await addDoc(testCollectionRef, { title: newTask.title});
+  }
+
+  //data retrieveal 
+  useEffect(() => {
+    const getTest = async () => {
+      const data = await getDocs(testCollectionRef);
+      setAllTasksList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    }
+    getTest();
+  }, [])
+
+  //remove items individually
+  const deleteToDoItem = async (id) => {
+    const toDoItemDB = doc(db, "task", id);
+    await deleteDoc(toDoItemDB);
+  }
+
 
   const [allTasksList, setAllTasksList] = useState([])
 
@@ -49,15 +87,15 @@ function App() {
   const onDragEnd = result => {
     const { destination, source, draggableId } = result;
 
-    if(!destination) {
-        return;
+    if (!destination) {
+      return;
     }
 
     if (
-        destination.droppableId === source.droppableId &&
-        destination.index === source.index
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
     ) {
-        return;
+      return;
     }
 
     const newTaskIds = Array.from(allTasksList);
@@ -69,64 +107,65 @@ function App() {
 
     setAllTasksList(newColumn);
     console.log('123')
-}
+  }
 
   // new task form input
-	const handleChange = ({ target }) => {
-		// insert corresponding name and input as porperty [name] & value in the newTask object
-		const { name, value } = target;
+  const handleChange = ({ target }) => {
+    // insert corresponding name and input as porperty [name] & value in the newTask object
+    const { name, value } = target;
     // generate id for each task
     const id = Date.now();
 
-		setNewTask((prevNewTask) => ({
-			...prevNewTask,
-        [name]: value,
-        id: id,
-        done: false,
-		})
-		);
+    setNewTask((prevNewTask) => ({
+      ...prevNewTask,
+      [name]: value,
+      id: id,
+      done: false,
+    })
+    );
 
-    // console.log(allTasks)
-	};
+    console.log(allTasks)
+  };
 
   //submit task
-	const handleSubmit = (event) => {
-		// prevent default action
-		event.preventDefault();
+  const handleSubmit = (event) => {
+    // prevent default action
+    // event.preventDefault();
+    
+    // shift new task in all tasks list (before previous task(s))
+    setAllTasks((prevAllTasks) => ({
+      ...prevAllTasks,
+      [newTask.id]: newTask,
+    })
+    
+    );
+    
+    // add task id to all tasks list
+    setAllTasksList((prev) => ([
+      ...prev,
+      newTask.id
+    ]))
+    
+    // empty the value of newTask
+    setNewTask({});
+    createTask();
+  }
 
-			// shift new task in all tasks list (before previous task(s))
-			setAllTasks((prevAllTasks) => ({
-				...prevAllTasks,
-        [newTask.id]: newTask,
-      })
-			);
-
-      // add task id to all tasks list
-      setAllTasksList((prev) => ([
-        ...prev,
-        newTask.id
-      ]))
-
-			// empty the value of newTask
-			setNewTask({});
-	}
-  
 
   //Remove tasks marked as done
   const handleRemoveDone = e => {
-		e.preventDefault();
-    setAllTasksList(allTasksList.filter(task => 
-      { 
-        //keep tasks haven't been done on list, for later return
-        const taskToKeep = allTasks[task].done === false;
+    e.preventDefault();
+    setAllTasksList(allTasksList.filter(task => {
+      //keep tasks haven't been done on list, for later return
+      const taskToKeep = allTasks[task].done === false;
 
-        // delete task(s) done
-        if(allTasks[task].done === true) {
-          delete allTasks[task]
-        }
-        return taskToKeep
+      // delete task(s) done
+      if (allTasks[task].done === true) {
+        delete allTasks[task]
       }
-      ))
+      return taskToKeep
+    }
+    ))
       ;
   }
 
@@ -143,33 +182,35 @@ function App() {
     }))
   }
 
-  // toggle task done status
+  // // toggle task done status
   const handleToggleDone = (taskId) => {
-      setAllTasks(prevAllTasks => ({
-        ...prevAllTasks,
-        [taskId]: {
-          ...allTasks[taskId],
-          done: !allTasks[taskId].done
-        }
-      }))
+    setAllTasks(prevAllTasks => ({
+      ...prevAllTasks,
+      [taskId]: {
+        ...allTasks[taskId],
+        done: !allTasks[taskId].done
+      }
+    }))
   }
 
-
+  // useEffect(() => {
+  //   await addDoc(testCollectionRef, allTasks);
+  // }, [allTasks])
 
   // Toggle add task form
   useEffect(() => {
-    $(document).ready(function() {
-      $('#addTask').on("click", function() {
-          $("#taskForm").toggleClass("active");
-          $("#addBtn").toggleClass("active");
+    $(document).ready(function () {
+      $('#addTask').on("click", function () {
+        $("#taskForm").toggleClass("active");
+        $("#addBtn").toggleClass("active");
       })
-  })
-  },[])
+    })
+  }, [])
 
 
   // fetch local data from local storge on page loaded
   useEffect(() => {
-    if(!allTasks) {
+    if (!allTasks) {
       // fetch data from local storage
       const data = localStorage.getItem('testing-task');
       // add the parsed data to allTasks
@@ -177,25 +218,43 @@ function App() {
     }
   }, [])
 
-
+  useEffect(() => {
+    const updateToDoItem = async (id) => {
+      const testDoc = doc(db, "allTasks", id)
+      // const newFields = allTasks
+      await updateDoc(testDoc, {allTasks})
+    }})
+  //   setAllTasks(null)
+  //   updateToDoItem('testtask')
+  // }, [allTasks])
+  
 
   useEffect(() => {
-      // fetch data from local storage
-      const data = localStorage.getItem('testing-task-list');
-      // add the parsed data to allTasks
-      setAllTasksList(JSON.parse(data));
+    // fetch data from local storage
+    const data = localStorage.getItem('testing-task-list');
+    // add the parsed data to allTasks
+    setAllTasksList(JSON.parse(data));
   }, [])
 
-    // store tasks to local storage while adding task
-	useEffect(() => {
-		localStorage.setItem('testing-task', JSON.stringify(allTasks))
-	}, [allTasks, allTasksList])
+  // store tasks to local storage while adding task
+  useEffect(() => {
+    localStorage.setItem('testing-task', JSON.stringify(allTasks))
+  }, [allTasks, allTasksList])
 
-	useEffect(() => {
-		localStorage.setItem('testing-task-list', JSON.stringify(allTasksList))
-	}, [allTasksList])
+  useEffect(() => {
+    localStorage.setItem('testing-task-list', JSON.stringify(allTasksList))
+  }, [allTasksList])
 
 
+
+
+    const updateDoc = async () => {
+      const allTasksDoc = doc(db, "testAllTasks", 123);
+      const newFields = {allTasks: 'react'}
+      await updateDoc(newFields, allTasksDoc)  
+    }
+
+  
 
 
 
@@ -203,14 +262,14 @@ function App() {
   return (
     <div className="App">
       <TaskFormToggle />
-      <div className='container-fluid' style={{padding: 0, overflow: 'hidden'}}>
+      <div className='container-fluid' style={{ padding: 0, overflow: 'hidden' }}>
         <MainRow className='row'>
           <SideBar />
 
 
           {/* <Main /> */}
           <main className="col">
-            <div className="row" style={{height: '100vh'}}>
+            <div className="row" style={{ height: '100vh' }}>
 
               <HomePage
                 allTasksList={allTasksList}
@@ -220,7 +279,8 @@ function App() {
                 handleEditTask={handleEditTask}
                 handleToggleDone={handleToggleDone}
                 handleRemoveTask={handleRemoveTask}
-                />
+                deleteToDoItem={deleteToDoItem}
+              />
 
               <ListsPage />
 
@@ -233,6 +293,7 @@ function App() {
             newTask={newTask}
             handleSubmit={handleSubmit}
             handleChange={handleChange}
+            updateDoc={updateDoc}
           />
 
 
@@ -243,7 +304,7 @@ function App() {
 
         </MainRow>
 
-        
+
       </div>
 
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Task from './Task';
@@ -10,8 +10,7 @@ const TasksContainer = styled.div`
 `
 
 
-function AllTaskList({ allTasksList, onDragEnd, allTasks, handleEditTask, handleToggleDone, handleRemoveTask }) {
-
+function AllTaskList({ deleteToDoItem, allTasksList, onDragEnd, allTasks, handleEditTask, handleToggleDone, handleRemoveTask }) {
     return (
         <DragDropContext className='mx-5' onDragEnd={onDragEnd}>
         <div className="row  task-list">
@@ -30,16 +29,29 @@ function AllTaskList({ allTasksList, onDragEnd, allTasks, handleEditTask, handle
                             ref={provided.innerRef}
                             // isDraggingOver={snapshot.isDraggingOver}    
                         >
-                            {allTasksList.map((taskId, index) => 
+                            
+                            {
+                            // ? allTasksList.map((taskId, index) => 
+                            //     <Task 
+                            //         key={allTasks[taskId].id}
+                            //         index={index}
+                            //         task={allTasks[taskId]}
+                            //         handleEditTask={handleEditTask}
+                            //         handleToggleDone={handleToggleDone}
+                            //         handleRemoveTask={handleRemoveTask}
+                            //     />)
+
+                            allTasksList.map((ele, index) => 
                                 <Task 
-                                    key={allTasks[taskId].id}
+                                    // key={allTasks[taskId].id}
                                     index={index}
-                                    task={allTasks[taskId]}
-                                    handleEditTask={handleEditTask}
+                                    task={ele}
+                                    // handleEditTask={handleEditTask}
                                     handleToggleDone={handleToggleDone}
-                                    handleRemoveTask={handleRemoveTask}
+                                    deleteToDoItem={deleteToDoItem}
+                                    // handleRemoveTask={handleRemoveTask}
                                 />)
-                            }
+                            }   
 
                             {provided.placeholder}
                         </TasksContainer>  

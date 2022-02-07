@@ -50,7 +50,7 @@ const OverviewText = styled.div`
 
 `
 
-function HomePage({allTasksList, onDragEnd, allTasks, handleRemoveDone, handleEditTask, handleToggleDone, handleRemoveTask }) {
+function HomePage({deleteToDoItem, allTasksList, onDragEnd, allTasks, handleRemoveDone, handleEditTask, handleToggleDone, handleRemoveTask }) {
 
     return (
         <Container className='col-12' id="Home">
@@ -182,6 +182,7 @@ function HomePage({allTasksList, onDragEnd, allTasks, handleRemoveDone, handleEd
                                 handleEditTask={handleEditTask}
                                 handleToggleDone={handleToggleDone}
                                 handleRemoveTask={handleRemoveTask}
+                                deleteToDoItem={deleteToDoItem}
                             />
 
 
