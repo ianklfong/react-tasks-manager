@@ -52,7 +52,7 @@ const OverviewText = styled.div`
     font-size: clamp(25px, 1.5vw, 30px);
 `
 
-function Overview({lists, onDragEnd, allTasks, handleRemoveDone, handleEditTask, handleToggleDone, handleRemoveTask, listOrder }) {
+function Overview({lists, onDragEnd, allTasks, handleRemoveDone, handleEditTask, handleToggleDone, handleRemoveTask, listOrder, searchItems, searchInput, searchResults, handleSearchInput  }) {
 
     
     return (
@@ -140,6 +140,7 @@ function Overview({lists, onDragEnd, allTasks, handleRemoveDone, handleEditTask,
                                     {Object.keys(allTasks).length === 0 ?
                                         <EmptyProgress />   
                                         :
+                                        // <></>
                                         <Progresses allTasks={allTasks} listOrder={listOrder} lists={lists}/>
                                     }
 
@@ -173,7 +174,7 @@ function Overview({lists, onDragEnd, allTasks, handleRemoveDone, handleEditTask,
                         <>
                             <div className="row py-4 px-5" style={{height: "10%"}}>
 
-                            <SearchBar className="mx-5"/>
+                            <SearchBar className="mx-5" searchItems={searchItems} searchInput={searchInput} handleSearchInput={handleSearchInput} />
 
                             </div>
                             {/* start of function row */}
@@ -200,6 +201,9 @@ function Overview({lists, onDragEnd, allTasks, handleRemoveDone, handleEditTask,
                                 handleEditTask={handleEditTask}
                                 handleToggleDone={handleToggleDone}
                                 handleRemoveTask={handleRemoveTask}
+                                searchResults={searchResults}
+                                searchInput={searchInput}
+                                searchItems={searchItems}
                             />
                         </>
 }

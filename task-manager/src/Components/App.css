@@ -360,6 +360,10 @@ form input, select {
   width:100%;
 }
 
+input:focus {
+  outline: none;
+}
+
 input[type=submit] {
   background: 0;
   color: #70bbae;

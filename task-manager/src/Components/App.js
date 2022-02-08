@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+  import { useState, useEffect } from 'react';
 
 // import JQuery
 import $ from 'jquery';
@@ -25,6 +25,9 @@ import ListsPage from './Lists/ListsPage';
 // impot add Task Form
 import TaskForm from './TaskForm';
 
+//import firebase method
+import { collection, doc, getDocs, addDoc, deleteDoc } from 'firebase/firestore';
+import { testCollectionRef, listCollectionRef } from '../firebase-config'
 
 
 const MainRow = styled.div`
@@ -36,6 +39,14 @@ function App() {
 
 	// new task input state
 	const [newTask, setNewTask] = useState({});
+
+  const [searchInput, setSearchInput] = useState('');
+  // The new state of the filtered data
+
+  const handleSearchInput = e => {
+    setSearchInput(e)
+  }
+
 
     // new task form input
 	const handleChange = ({ target }) => {
@@ -53,7 +64,7 @@ function App() {
 		})
 		);
 
-    console.log(lists)
+    console.log(searchInput)
 	};
 
   // all tasks data storage
@@ -96,6 +107,7 @@ function App() {
       ...prev,
       id
     ]))
+    createList();
   }
 
   // delete list
@@ -197,7 +209,7 @@ function App() {
       
       return;
     }
-    
+ 
     
     // Moving from one list to another
     // make a copy of the task ids array of the starting droppable
@@ -231,6 +243,37 @@ function App() {
     }))
 
   }
+
+      //database 
+      // upload to db 
+      const createTask = async () => {
+        await addDoc(testCollectionRef, {
+          title: newTask.title,
+          notes: newTask.notes || '',
+          date: newTask.date || '',
+          time: newTask.time || '',
+          location: newTask.location || '',
+          done: newTask.done,
+        });
+      }
+
+      const createList = async () => {
+        await addDoc(listCollectionRef, {
+          listTitle: lists.title
+        });
+      }
+
+      // database data retrieval
+      useEffect(() => {
+        const getData = async () => {
+          const data = await getDocs(testCollectionRef);
+          setAllTasks(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        }
+        getData();
+        return;
+      }, [])
+    
+  
 
   //submit new task
 	const handleSubmitTask = list => {
@@ -267,7 +310,9 @@ function App() {
           id
         ]))
 
-      } else {
+      } 
+      
+      else {
         setLists(prev => ({
           ...prev,
           'all-tasks': {
@@ -286,8 +331,11 @@ function App() {
         
       // empty the value of newTask
 			setNewTask({});
+      //database - add new items to db
+      createTask();
+      console.log(lists)
 	}
-  
+
   // remove tasks marked as done
   const handleRemoveDone = () => {
     // first, delete the task id data in the corresponding list
@@ -332,7 +380,7 @@ function App() {
         }))
         
       }
-      
+
       const newAllTasks = {...allTasks}
       for(let key in newAllTasks) {
         if(newAllTasks[key].id === taskId) {
@@ -341,18 +389,6 @@ function App() {
       }
 
       setAllTasks(newAllTasks)
-
-        // newArr.forEach(task => {
-        //   if (allTasks[task].id === taskId) {
-        //     const newAllTasks = {...allTasks};
-        //     delete newAllTasks[task]
-        //     setAllTasks(newAllTasks)
-        //   }
-        
-        // })
-        
-
-
   }
   // edit task detail
   const handleEditTask = (taskId, updatedContent) => {
@@ -437,6 +473,9 @@ function App() {
                 handleEditTask={handleEditTask}
                 handleToggleDone={handleToggleDone}
                 handleRemoveTask={handleRemoveTask}
+                searchInput={searchInput}
+
+                handleSearchInput={handleSearchInput}
               />
 
               <ListsPage 
@@ -460,7 +499,6 @@ function App() {
             handleChange={handleChange}
             listOrder={listOrder}
             lists={lists}
-
           />
 
 
