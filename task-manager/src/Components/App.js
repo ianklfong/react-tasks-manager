@@ -107,7 +107,7 @@ function App() {
       ...prev,
       id
     ]))
-    createList();
+    createList(id);
   }
 
   // delete list
