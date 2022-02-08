@@ -10,7 +10,7 @@ import EmptyList from './EmptyList';
 
 
 //import Searcg bar component
-import SearchBar from './SearchBar';
+import SearchBar from './SearchBar.jsx';
 import ProgressBar from './ProgressBar';
 import Progresses from './Progresses';
 

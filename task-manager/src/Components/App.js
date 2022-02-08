@@ -1,11 +1,11 @@
-  import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 // import JQuery
 import $ from 'jquery';
 // import uuid
-import {v4 as uuid} from "uuid"; 
+import { v4 as uuid } from "uuid";
 // import styled components
-import styled from'styled-components';
+import styled from 'styled-components';
 // bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 // custom stylesheet
@@ -26,8 +26,8 @@ import ListsPage from './Lists/ListsPage';
 import TaskForm from './TaskForm';
 
 //import firebase method
-import { collection, doc, getDocs, addDoc, deleteDoc } from 'firebase/firestore';
-import { testCollectionRef, listCollectionRef } from '../firebase-config'
+import { collection, doc, getDocs, addDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { db, testCollectionRef, listCollectionRef } from '../firebase-config'
 
 
 const MainRow = styled.div`
@@ -37,8 +37,8 @@ const MainRow = styled.div`
 
 function App() {
 
-	// new task input state
-	const [newTask, setNewTask] = useState({});
+  // new task input state
+  const [newTask, setNewTask] = useState({});
 
   const [searchInput, setSearchInput] = useState('');
   // The new state of the filtered data
@@ -48,24 +48,24 @@ function App() {
   }
 
 
-    // new task form input
-	const handleChange = ({ target }) => {
-		// insert corresponding name and input as porperty [name] & value in the newTask object
-		const { name, value } = target;
+  // new task form input
+  const handleChange = ({ target }) => {
+    // insert corresponding name and input as porperty [name] & value in the newTask object
+    const { name, value } = target;
     // generate id for each task
     const id = uuid();
     // add value to coresponding key
-		setNewTask(prevNewTask => ({
-			...prevNewTask,
-        [name]: value,
-        id: id,
-        // intial task done as false (unfinished task)
-        done: false,
-		})
-		);
+    setNewTask(prevNewTask => ({
+      ...prevNewTask,
+      [name]: value,
+      id: id,
+      // intial task done as false (unfinished task)
+      done: false,
+    })
+    );
 
     console.log(searchInput)
-	};
+  };
 
   // all tasks data storage
   const [allTasks, setAllTasks] = useState({});
@@ -117,10 +117,10 @@ function App() {
     const filteredLists = newListOrder.filter(list => list !== listId);
 
     setListOrder(filteredLists)
-      
-    const newLists = {...lists}
-    for(let key in newLists) {
-      if(newLists[key].id === listId) {
+
+    const newLists = { ...lists }
+    for (let key in newLists) {
+      if (newLists[key].id === listId) {
         delete newLists[key]
       }
     }
@@ -130,7 +130,7 @@ function App() {
 
   // change list name
   const handleEditListTitle = (id, title) => {
-    if(title.length === 0) {
+    if (title.length === 0) {
       setLists(prev => ({
         ...prev,
         [id]: {
@@ -148,6 +148,7 @@ function App() {
         title: title
       }
     }))
+    updateListTitle(id, title);
   }
 
 
@@ -155,22 +156,21 @@ function App() {
   const onDragEnd = result => {
     const { destination, source, draggableId, type } = result;
 
-    if ( 
+    if (
       // if item is dropped outside of the droppable area or...
       !destination ||
       (
-          // if item is dropped at the same position as its place
-          destination.droppableId === source.droppableId &&
-          destination.index === source.index
-        )
-      ) 
-    {
+        // if item is dropped at the same position as its place
+        destination.droppableId === source.droppableId &&
+        destination.index === source.index
+      )
+    ) {
       // terminate function
       return;
     }
 
 
-    if(type === 'lists') {
+    if (type === 'lists') {
       const newColumnOrder = Array.from(listOrder);
 
       newColumnOrder.splice(source.index, 1);
@@ -188,7 +188,7 @@ function App() {
     const finish = lists[destination.droppableId];
 
     // if the items dropped as the same droppable id it belongs
-    if(start === finish) {
+    if (start === finish) {
       // make a copy of the task ids order array
       const newTaskIds = Array.from(start.taskIds);
 
@@ -197,7 +197,7 @@ function App() {
       // remove 0 item from the destination index of the droppable, 
       // add the dragging item(id) after the index 
       newTaskIds.splice(destination.index, 0, draggableId);
-      
+
       // update data in the column
       setLists(prev => ({
         ...prev,
@@ -206,23 +206,23 @@ function App() {
           taskIds: newTaskIds
         }
       }));
-      
+
       return;
     }
- 
-    
+
+
     // Moving from one list to another
     // make a copy of the task ids array of the starting droppable
     const startTaskIds = Array.from(start.taskIds);
     // remove 1 item (dragging item(draggable id)) from the original index of the droppable
     startTaskIds.splice(source.index, 1);
-    
+
     // make a new state for later update the starting column data
     const newStart = {
       ...start,
       taskIds: startTaskIds,
     };
-    
+
     // make a copy of the task ids array of the destination droppable
     const finishTaskIds = Array.from(finish.taskIds);
     // remove 0 item from the destination index of the droppable, 
@@ -244,56 +244,68 @@ function App() {
 
   }
 
-      //database 
-      // upload to db 
-      const createTask = async () => {
-        await addDoc(testCollectionRef, {
-          title: newTask.title,
-          notes: newTask.notes || '',
-          date: newTask.date || '',
-          time: newTask.time || '',
-          location: newTask.location || '',
-          done: newTask.done,
-        });
-      }
+  //database 
+  // upload to db 
+  const createTask = async () => {
+    await addDoc(testCollectionRef, {
+      title: newTask.title,
+      notes: newTask.notes || '',
+      date: newTask.date || '',
+      time: newTask.time || '',
+      location: newTask.location || '',
+      done: newTask.done,
+    });
+  }
 
-      const createList = async () => {
-        await addDoc(listCollectionRef, {
-          listTitle: lists.title
-        });
-      }
 
-      // database data retrieval
-      useEffect(() => {
-        const getData = async () => {
-          const data = await getDocs(testCollectionRef);
-          setAllTasks(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        }
-        getData();
-        return;
-      }, [])
-    
-  
+  // database data retrieval
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getDocs(testCollectionRef);
+      setAllTasks(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    }
+    getData();
+    return;
+  }, [])
+
+  // //upload list detail
+  const createList = async (id) => {
+    await addDoc(listCollectionRef, {
+      list: lists[id].title
+    });
+  }
+
+
+  //update database details
+  const updateListTitle = async (id, title) => {
+    const allTasksDoc = doc(db, "list", id);
+    const newFields = {
+      lists: lists[id].title,
+    }
+    await updateDoc(newFields, allTasksDoc)
+  }
+
+
 
   //submit new task
-	const handleSubmitTask = list => {
-			// put new task into allTasks state
-			setAllTasks(prevAllTasks => ({
-				...prevAllTasks,
-        [newTask.id]: newTask,
-      })
-			);
+  const handleSubmitTask = list => {
+    // put new task into allTasks state
+    setAllTasks(prevAllTasks => ({
+      ...prevAllTasks,
+      [newTask.id]: newTask,
+    })
+    );
 
-      // if there is no list created and users choose to create new list as adding new task
-      if(list === "addNewTaskList") {
-        // generate new id for new list
-        const id = uuid();
-        setLists(prev => ({
-          ...prev,
-          'all-tasks': {
-            ...lists['all-tasks'],
-            taskIds: [...lists['all-tasks'].taskIds, newTask.id]
-          },
+    // if there is no list created and users choose to create new list as adding new task
+    if (list === "addNewTaskList") {
+      // generate new id for new list
+      const id = uuid();
+      setLists(prev => ({
+        ...prev,
+        'all-tasks': {
+          ...lists['all-tasks'],
+          taskIds: [...lists['all-tasks'].taskIds, newTask.id]
+        },
         // new column 
         [id]: {
           // column id
@@ -303,44 +315,44 @@ function App() {
           // add new task to the new list
           taskIds: [newTask.id],
         }
-        }))
+      }))
 
-        setListOrder(prev => ([
-          ...prev,
-          id
-        ]))
+      setListOrder(prev => ([
+        ...prev,
+        id
+      ]))
 
-      } 
-      
-      else {
-        setLists(prev => ({
-          ...prev,
-          'all-tasks': {
-            ...lists['all-tasks'],
-            // push the task to all tasks
-            taskIds: [...lists['all-tasks'].taskIds, newTask.id]
-          },
-          // update the list according to the argument passed in (corresponding list id)
-          [list] : { 
-            ...lists[list],
-            // push the task to the list
-            taskIds: [...lists[list].taskIds, newTask.id]
-          }
-        }))
-      }
-        
-      // empty the value of newTask
-			setNewTask({});
-      //database - add new items to db
-      createTask();
-      console.log(lists)
-	}
+    }
+
+    else {
+      setLists(prev => ({
+        ...prev,
+        'all-tasks': {
+          ...lists['all-tasks'],
+          // push the task to all tasks
+          taskIds: [...lists['all-tasks'].taskIds, newTask.id]
+        },
+        // update the list according to the argument passed in (corresponding list id)
+        [list]: {
+          ...lists[list],
+          // push the task to the list
+          taskIds: [...lists[list].taskIds, newTask.id]
+        }
+      }))
+    }
+
+    // empty the value of newTask
+    setNewTask({});
+    //database - add new items to db
+    createTask();
+    console.log(lists)
+  }
 
   // remove tasks marked as done
   const handleRemoveDone = () => {
     // first, delete the task id data in the corresponding list
     // use for...loop to locate the target task in corresponding lists
-    for(let key in lists) {
+    for (let key in lists) {
       // filter the target task (marked as done) away
       let newIds = lists[key].taskIds.filter(task => allTasks[task].done === false);
       //update the list
@@ -353,9 +365,9 @@ function App() {
       }))
     }
     // duplicate an allTasks object
-    const newAllTasks = {...allTasks};
+    const newAllTasks = { ...allTasks };
     // loop through each key(task) of newAllTasks
-    for(let key in newAllTasks) {
+    for (let key in newAllTasks) {
       // check if any key (task)'s done status is true
       if (newAllTasks[key].done === true) {
         // delete that key (task)
@@ -369,26 +381,26 @@ function App() {
   const handleRemoveTask = taskId => {
     // const newArr = lists['all-tasks'].taskIds.slice();
 
-      for(let key in lists) {
-        let newIds = lists[key].taskIds.filter(task => allTasks[task].id !== taskId);
-        setLists(prev => ({
-          ...prev,
-          [key]: {
-            ...lists[key],
-            taskIds: newIds
-          }
-        }))
-        
-      }
-
-      const newAllTasks = {...allTasks}
-      for(let key in newAllTasks) {
-        if(newAllTasks[key].id === taskId) {
-          delete newAllTasks[key]
+    for (let key in lists) {
+      let newIds = lists[key].taskIds.filter(task => allTasks[task].id !== taskId);
+      setLists(prev => ({
+        ...prev,
+        [key]: {
+          ...lists[key],
+          taskIds: newIds
         }
-      }
+      }))
 
-      setAllTasks(newAllTasks)
+    }
+
+    const newAllTasks = { ...allTasks }
+    for (let key in newAllTasks) {
+      if (newAllTasks[key].id === taskId) {
+        delete newAllTasks[key]
+      }
+    }
+
+    setAllTasks(newAllTasks)
   }
   // edit task detail
   const handleEditTask = (taskId, updatedContent) => {
@@ -399,52 +411,54 @@ function App() {
   }
   // toggle task done status
   const handleToggleDone = (taskId) => {
-      setAllTasks(prevAllTasks => ({
-        ...prevAllTasks,
-        [taskId]: {
-          ...allTasks[taskId],
-          done: !allTasks[taskId].done
-        }
-      }))
+    setAllTasks(prevAllTasks => ({
+      ...prevAllTasks,
+      [taskId]: {
+        ...allTasks[taskId],
+        done: !allTasks[taskId].done
+      }
+    }))
   }
 
   // toggle task form
   const handleToggleForm = () => {
-      $("#taskForm").toggleClass("active");
-      $("#addBtn").toggleClass("active");  
+    $("#taskForm").toggleClass("active");
+    $("#addBtn").toggleClass("active");
+    $(".form-backdrop").toggleClass("active");
+    $("#addBtnMobile").toggleClass("active")
   }
 
-  
-//   // fetch all tasks data
-//   useEffect(() => {
-//     // fetch data from local storage
-//     const data = localStorage.getItem('Tasks');
-//     // add the parsed data to allTasks
-//     setAllTasks(JSON.parse(data));
-//   // only fetch on page loaded
-// }, [])
 
-// // fetch all tasks list data
-// useEffect(() => {
-//     // fetch data from local storage
-//     const data = localStorage.getItem('Lists');
-//     // add the parsed data to allTasks
-//     setLists(JSON.parse(data));
-// // only fetch on page loaded
-// }, [])
+  //   // fetch all tasks data
+  //   useEffect(() => {
+  //     // fetch data from local storage
+  //     const data = localStorage.getItem('Tasks');
+  //     // add the parsed data to allTasks
+  //     setAllTasks(JSON.parse(data));
+  //   // only fetch on page loaded
+  // }, [])
+
+  // // fetch all tasks list data
+  // useEffect(() => {
+  //     // fetch data from local storage
+  //     const data = localStorage.getItem('Lists');
+  //     // add the parsed data to allTasks
+  //     setLists(JSON.parse(data));
+  // // only fetch on page loaded
+  // }, [])
 
 
-//   // store all tasks data
-// 	useEffect(() => {
-// 		localStorage.setItem('Tasks', JSON.stringify(allTasks))
-// 	}, [allTasks])
+  //   // store all tasks data
+  // 	useEffect(() => {
+  // 		localStorage.setItem('Tasks', JSON.stringify(allTasks))
+  // 	}, [allTasks])
 
-//   // store all tasks list data
-// 	useEffect(() => {
-// 		localStorage.setItem('Lists', JSON.stringify(lists))
-// 		localStorage.setItem('Tasks', JSON.stringify(allTasks))
+  //   // store all tasks list data
+  // 	useEffect(() => {
+  // 		localStorage.setItem('Lists', JSON.stringify(lists))
+  // 		localStorage.setItem('Tasks', JSON.stringify(allTasks))
 
-// 	}, [lists])
+  // 	}, [lists])
 
 
 
@@ -453,16 +467,16 @@ function App() {
 
   return (
     <div className="App">
-      <TaskFormToggle handleToggleForm={handleToggleForm}/>
-      <MobileNav />
+      <TaskFormToggle handleToggleForm={handleToggleForm} />
+      <MobileNav handleToggleForm={handleToggleForm} />
 
-      <div className='container-fluid' style={{padding: 0, overflow: 'hidden'}}>
+      <div className='container-fluid' style={{ padding: 0, overflow: 'hidden' }}>
         <MainRow className='row'>
           <SideBar />
 
 
           <main className="col">
-            <div className="row" style={{height: '100vh'}}>
+            <div className="row" style={{ height: '100vh' }}>
 
               <Overview
                 lists={lists}
@@ -478,7 +492,7 @@ function App() {
                 handleSearchInput={handleSearchInput}
               />
 
-              <ListsPage 
+              <ListsPage
                 lists={lists}
                 listOrder={listOrder}
                 onDragEnd={onDragEnd}
@@ -499,6 +513,7 @@ function App() {
             handleChange={handleChange}
             listOrder={listOrder}
             lists={lists}
+            handleToggleForm={handleToggleForm}
           />
 
 
@@ -509,7 +524,7 @@ function App() {
 
         </MainRow>
 
-        
+
       </div>
 
     </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 
-function TaskForm({ newTask, handleSubmitTask, handleChange, listOrder, lists}) {
+            function TaskForm({ newTask, handleSubmitTask, handleChange, listOrder, lists, handleToggleForm}) {
 
     const [list, setList] = useState()
 
@@ -29,8 +29,9 @@ function TaskForm({ newTask, handleSubmitTask, handleChange, listOrder, lists}) 
 
 
     return (
+        <>
         <div id="taskForm" className="col-auto d-lg-block">
-
+            
             <form onSubmit={handleSubmit} className="h-100">
 
                 {/* start of title row */}
@@ -128,7 +129,11 @@ function TaskForm({ newTask, handleSubmitTask, handleChange, listOrder, lists}) 
                     </div>
                 </div>
             </form>
+
     </div>
+    <div className="form-backdrop" style={{position: 'absolute', width: '100vw', height: '100vh', background: 'black', borderRadius: 0}} onClick={handleToggleForm}></div>
+
+    </>
     );
 }
 

@@ -3,17 +3,17 @@ import $ from 'jquery';
 function SideBar() {
 
     const handleClick = () => {
-        $("#sidebar").toggleClass("active");
+        $("#sidebar").toggleClass("collapsed");
         $(".arrow-btn").toggleClass("active");
         $('nav p').toggleClass("hidden");
     }
 
 
     return (
-        <div className='col-auto d-none d-lg-block'>
-            <nav id="sidebar">
+        <div className='col-auto' id="sidebar">
+            <nav>
                 {/* collapse/ expand toggle */}
-                <div className="py-3 d-block border-bottom">
+                <div className="py-3 d-block border-bottom  d-none d-lg-block">
                     <button id="collapse" className="h-100 w-100 btn collapse-btn" onClick={handleClick}>
                             {/* app name */}
                             {/* <p>WELL, DONE!</p> */}
@@ -29,7 +29,7 @@ function SideBar() {
                     </button>
                 </div>
                 {/* start of menu list */}
-                <ul className="mt-5 list-unstyled">
+                <ul className="mt-lg-5 list-unstyled" style={{marginTop: '7.7rem'}}>
                     {/* Home */}
                     <li>
                         <a href="#Home">
