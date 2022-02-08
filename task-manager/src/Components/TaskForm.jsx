@@ -99,7 +99,7 @@ function TaskForm({ newTask, handleSubmit, handleChange, updateDoc}) {
                             value={newTask.location || ""}
                             onChange={handleChange}
                         />
-                        <input type="submit" value="+ Add Task" onClick={() => {updateDoc(); console.log('123')}}/>
+                        <input type="submit" value="+ Add Task"/>
                     </div>
                 </div>
             </form>

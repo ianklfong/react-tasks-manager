@@ -15,7 +15,7 @@ const TaskCard = styled.div`
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
 `
 
-function Task({ deleteToDoItem, task, index, handleEditTask, handleToggleDone, handleRemoveTask }) {
+function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask }) {
 
     // const [editTitle, setEditTitle] = useState('');
 
@@ -54,16 +54,16 @@ function Task({ deleteToDoItem, task, index, handleEditTask, handleToggleDone, h
     const [updateTask, setUpdateTask] = useState(task);
     // inputing form
 
-    // const handleChange = ({ target }) => {
-    //     // insert corresponding name and input as porperty [name] & value in the newTask object
-    //     const { name, value } = target;
-    //     setUpdateTask(prev => ({
-    //         ...prev,
-    //         [name]: value,
-    //     })
-    //     );
-    //     console.log(task)
-    // };
+    const handleChange = ({ target }) => {
+        // insert corresponding name and input as porperty [name] & value in the newTask object
+        const { name, value } = target;
+        setUpdateTask(prev => ({
+            ...prev,
+            [name]: value,
+        })
+        );
+        console.log(task)
+    };
 
     const handleUnsave = (e) => {
         e.preventDefault();
@@ -78,6 +78,7 @@ function Task({ deleteToDoItem, task, index, handleEditTask, handleToggleDone, h
         e.preventDefault();
         handleEditTask(task.id, updateTask)
         setEdit(!edit)
+        console.log(updateTask);
     }
 
     const handleClick = (e) => {
@@ -85,10 +86,10 @@ function Task({ deleteToDoItem, task, index, handleEditTask, handleToggleDone, h
         handleToggleDone(task.id)
     }
 
-    // const handleRemove = e => {
-    //     e.preventDefault();
-    //     handleRemoveTask(task.id)
-    // }
+    const handleRemove = e => {
+        e.preventDefault();
+        handleRemoveTask(task.id)
+    }
 
 
     return (
@@ -140,7 +141,7 @@ function Task({ deleteToDoItem, task, index, handleEditTask, handleToggleDone, h
                                     name="title"
                                     // value={updateTask.title || ""}
                                     maxLength="20"
-                                    // onChange={handleChange}
+                                    onChange={handleChange}
                                 /> :
                                 <p
                                     // onClick={() => setEdit(!edit)}
@@ -198,7 +199,7 @@ function Task({ deleteToDoItem, task, index, handleEditTask, handleToggleDone, h
                             </button>
                             :
                             <button
-                                onClick={deleteToDoItem}
+                                onClick={handleRemove}
                                 className="col-1  d-flex align-items-center justify-content-center"
                             >
                                 {/* individual delete button */}
@@ -238,8 +239,7 @@ function Task({ deleteToDoItem, task, index, handleEditTask, handleToggleDone, h
                                         placeholder='date'
                                         name="date"
                                         value={updateTask.date || ""}
-
-                                        // onChange={handleChange}
+                                        onChange={handleChange}
                                     />
                                 </div>
                                 <p style={{ fontSize: 18 }}>&nbsp;‧&nbsp;</p>
@@ -253,8 +253,7 @@ function Task({ deleteToDoItem, task, index, handleEditTask, handleToggleDone, h
                                         placeholder='time'
                                         name="time"
                                         value={updateTask.time || ""}
-
-                                        // onChange={handleChange}
+                                        onChange={handleChange}
                                     />
                                 </div>
                                 <p style={{ fontSize: 18 }}>&nbsp;‧&nbsp;</p>
@@ -268,8 +267,7 @@ function Task({ deleteToDoItem, task, index, handleEditTask, handleToggleDone, h
                                         placeholder='location'
                                         name="location"
                                         value={updateTask.location || ""}
-
-                                        // onChange={handleChange}
+                                        onChange={handleChange}
                                     />
                                 </div>
                             </div>

@@ -10,7 +10,7 @@ const TasksContainer = styled.div`
 `
 
 
-function AllTaskList({ deleteToDoItem, allTasksList, onDragEnd, allTasks, handleEditTask, handleToggleDone, handleRemoveTask }) {
+function AllTaskList({ allTasksList, onDragEnd, allTasks, handleEditTask, handleToggleDone, handleRemoveTask }) {
     return (
         <DragDropContext className='mx-5' onDragEnd={onDragEnd}>
         <div className="row  task-list">
@@ -46,10 +46,9 @@ function AllTaskList({ deleteToDoItem, allTasksList, onDragEnd, allTasks, handle
                                     // key={allTasks[taskId].id}
                                     index={index}
                                     task={ele}
-                                    // handleEditTask={handleEditTask}
+                                    handleEditTask={handleEditTask}
                                     handleToggleDone={handleToggleDone}
-                                    deleteToDoItem={deleteToDoItem}
-                                    // handleRemoveTask={handleRemoveTask}
+                                    handleRemoveTask={handleRemoveTask}
                                 />)
                             }   
 

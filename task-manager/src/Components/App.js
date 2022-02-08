@@ -41,35 +41,22 @@ const MainRow = styled.div`
 
 
 function App() {
-  // const allTasksRef = collection(db, "task")
-
-  // useEffect(() => { 
-  //   const createTask = async () => {
-  //     // await addDoc(testCollectionRef, { title: newTask.title , notes: newTask.notes, date: newTask.Date});
-
-  //     await addDoc(testCollectionRef, {});}
-  //     createTask();
-  // }, [])
-
-
   // state of new task input
   const [newTask, setNewTask] = useState({});
   const [allTasks, setAllTasks] = useState(null);
-  
+
 
   // upload to db 
   const createTask = async () => {
-    await addDoc(testCollectionRef, { title: newTask.title});
+    await addDoc(testCollectionRef, {
+      title: newTask.title,
+      notes: newTask.notes || '',
+      date: newTask.date || '',
+      time: newTask.time || '',
+      location: newTask.location || ''
+    });
   }
 
-  //data retrieveal 
-  useEffect(() => {
-    const getTest = async () => {
-      const data = await getDocs(testCollectionRef);
-      setAllTasksList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-    }
-    getTest();
-  }, [])
 
   //remove items individually
   const deleteToDoItem = async (id) => {
@@ -77,8 +64,32 @@ function App() {
     await deleteDoc(toDoItemDB);
   }
 
+  // update items 
+    const updateDoc = async (id, title, notes, date, time, location) => {
+    const allTasksDoc = doc(db, "task");
+    const newFields = {      
+      title: newTask.title || '',
+      notes: newTask.notes || '',
+      date: newTask.date || '',
+      time: newTask.time || '',
+      location: newTask.location || ''
+}
+    await updateDoc(newFields, allTasksDoc)  
+  }
+
+
 
   const [allTasksList, setAllTasksList] = useState([])
+  //data retrieveal 
+  useEffect(() => {
+    const getTest = async () => {
+      const data = await getDocs(testCollectionRef);
+      setAllTasksList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    }
+    getTest();
+    return;
+    // console.log(1)
+  }, [allTasks])
 
   // lists for dnd
   // const [list, setList] = useState({})
@@ -131,21 +142,21 @@ function App() {
   const handleSubmit = (event) => {
     // prevent default action
     // event.preventDefault();
-    
+
     // shift new task in all tasks list (before previous task(s))
     setAllTasks((prevAllTasks) => ({
       ...prevAllTasks,
       [newTask.id]: newTask,
     })
-    
+
     );
-    
+
     // add task id to all tasks list
     setAllTasksList((prev) => ([
       ...prev,
       newTask.id
     ]))
-    
+
     // empty the value of newTask
     setNewTask({});
     createTask();
@@ -171,7 +182,7 @@ function App() {
 
   const handleRemoveTask = taskId => {
     delete allTasks[taskId]
-    setAllTasksList(allTasksList.filter(task => task !== taskId))
+    setAllTasksList(allTasksList.filter(task => task !== taskId));
   }
 
   // edit task detail
@@ -209,52 +220,52 @@ function App() {
 
 
   // fetch local data from local storge on page loaded
-  useEffect(() => {
-    if (!allTasks) {
-      // fetch data from local storage
-      const data = localStorage.getItem('testing-task');
-      // add the parsed data to allTasks
-      setAllTasks(JSON.parse(data));
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (!allTasks) {
+  //     // fetch data from local storage
+  //     const data = localStorage.getItem('testing-task');
+  //     // add the parsed data to allTasks
+  //     setAllTasks(JSON.parse(data));
+  //   }
+  // }, [])
 
-  useEffect(() => {
-    const updateToDoItem = async (id) => {
-      const testDoc = doc(db, "allTasks", id)
-      // const newFields = allTasks
-      await updateDoc(testDoc, {allTasks})
-    }})
+  // useEffect(() => {
+  //   const updateToDoItem = async (id) => {
+  //     const testDoc = doc(db, "allTasks", id)
+  //     // const newFields = allTasks
+  //     await updateDoc(testDoc, {allTasks})
+  //   }})
   //   setAllTasks(null)
   //   updateToDoItem('testtask')
   // }, [allTasks])
-  
-
-  useEffect(() => {
-    // fetch data from local storage
-    const data = localStorage.getItem('testing-task-list');
-    // add the parsed data to allTasks
-    setAllTasksList(JSON.parse(data));
-  }, [])
-
-  // store tasks to local storage while adding task
-  useEffect(() => {
-    localStorage.setItem('testing-task', JSON.stringify(allTasks))
-  }, [allTasks, allTasksList])
-
-  useEffect(() => {
-    localStorage.setItem('testing-task-list', JSON.stringify(allTasksList))
-  }, [allTasksList])
 
 
+  // useEffect(() => {
+  //   // fetch data from local storage
+  //   const data = localStorage.getItem('testing-task-list');
+  //   // add the parsed data to allTasks
+  //   setAllTasksList(JSON.parse(data));
+  // }, [])
+
+  // // store tasks to local storage while adding task
+  // useEffect(() => {
+  //   localStorage.setItem('testing-task', JSON.stringify(allTasks))
+  // }, [allTasks, allTasksList])
+
+  // useEffect(() => {
+  //   localStorage.setItem('testing-task-list', JSON.stringify(allTasksList))
+  // }, [allTasksList])
 
 
-    const updateDoc = async () => {
-      const allTasksDoc = doc(db, "testAllTasks", 123);
-      const newFields = {allTasks: 'react'}
-      await updateDoc(newFields, allTasksDoc)  
-    }
 
-  
+
+  // const updateDoc = async () => {
+  //   const allTasksDoc = doc(db, "testAllTasks", 123);
+  //   const newFields = {allTasks: 'react'}
+  //   await updateDoc(newFields, allTasksDoc)  
+  // }
+
+
 
 
 
@@ -279,7 +290,6 @@ function App() {
                 handleEditTask={handleEditTask}
                 handleToggleDone={handleToggleDone}
                 handleRemoveTask={handleRemoveTask}
-                deleteToDoItem={deleteToDoItem}
               />
 
               <ListsPage />
