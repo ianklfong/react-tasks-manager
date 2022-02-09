@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/react-tasks-manager/static/css/main.c178c170.css",
-    "main.js": "/react-tasks-manager/static/js/main.fe99657a.js",
+    "main.css": "/react-tasks-manager/static/css/main.fc68b96b.css",
+    "main.js": "/react-tasks-manager/static/js/main.4bb0cc59.js",
     "static/js/787.ebc41ba0.chunk.js": "/react-tasks-manager/static/js/787.ebc41ba0.chunk.js",
     "static/media/JohnLoren2.jpg": "/react-tasks-manager/static/media/JohnLoren2.0f7f1d11990cab301e2d.jpg",
     "index.html": "/react-tasks-manager/index.html",
-    "main.c178c170.css.map": "/react-tasks-manager/static/css/main.c178c170.css.map",
-    "main.fe99657a.js.map": "/react-tasks-manager/static/js/main.fe99657a.js.map",
+    "main.fc68b96b.css.map": "/react-tasks-manager/static/css/main.fc68b96b.css.map",
+    "main.4bb0cc59.js.map": "/react-tasks-manager/static/js/main.4bb0cc59.js.map",
     "787.ebc41ba0.chunk.js.map": "/react-tasks-manager/static/js/787.ebc41ba0.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c178c170.css",
-    "static/js/main.fe99657a.js"
+    "static/css/main.fc68b96b.css",
+    "static/js/main.4bb0cc59.js"
   ]
 }
