@@ -126,7 +126,9 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                                     value={updateTask.title || ""}
                                     maxLength="20"
                                     onChange={handleChange}
-                                /> :
+                                    data-testid="edit-title"
+                                /> 
+                                :
                                 <p
                                     // onClick={() => setEdit(!edit)}
                                     style={{
@@ -134,6 +136,7 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                                         textDecoration: task.done ? "line-through" : "none",
                                         color: task.done ? "lightgrey" : "inherit"
                                     }}
+                                    data-testid="task-title"
                                 >
                                     {task.title}
                                     {/* Feed the cats */}
@@ -149,6 +152,7 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                             <button
                                 className="col-1  d-flex align-items-center justify-content-center"
                                 onClick={handleSubmit}
+                                data-testid="save"
                             >
                                 {/* <button className="col-1 d-flex align-items-center justify-content-center" > */}
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -166,6 +170,7 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                                 }
 
                                 }
+                                data-testid="edit"
                             >
                                 {/* <button className="col-1 d-flex align-items-center justify-content-center" > */}
                                 <svg width="16" height="16" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -189,6 +194,7 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                             <button
                                 onClick={handleRemove}
                                 className="col-1  d-flex align-items-center justify-content-center"
+                                data-testid="delete-task"
                             >
                                 <svg width="16" height="16" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7.04688 10.3125H14.9531C15.0477 10.3125 15.125 10.3898 15.125 10.4844V11.5156C15.125 11.6102 15.0477 11.6875 14.9531 11.6875H7.04688C6.95234 11.6875 6.875 11.6102 6.875 11.5156V10.4844C6.875 10.3898 6.95234 10.3125 7.04688 10.3125Z" fill="black" />

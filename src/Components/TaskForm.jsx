@@ -125,7 +125,7 @@ import { useEffect } from 'react';
                             value={newTask.location || ""}
                             onChange={handleChange}
                         />
-                        <input type="submit" value="+ Add Task"/>
+                        <input type="submit" value="+ Add Task" data-testid="submit" />
                     </div>
                 </div>
             </form>

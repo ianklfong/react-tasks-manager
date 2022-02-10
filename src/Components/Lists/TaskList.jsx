@@ -75,6 +75,7 @@ function TaskColumn({ list, index, allTasks, handleEditListTitle, handleDeleteLi
                                 top: -5,
                                 left: -2
                             }}
+                            data-testid="list-title"
                         />
                     :
                     <h3 

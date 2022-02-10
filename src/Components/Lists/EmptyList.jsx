@@ -22,6 +22,7 @@ export default function EmptyList ({ handleAddList }){
             className='w-100 h-100 d-flex' 
             style={{padding: '5rem', flexDirection: 'row', cursor: 'pointer'}} 
             onClick={handleClick}
+            data-testid="add-list"
         >
 
             <Container className="row p-5">
