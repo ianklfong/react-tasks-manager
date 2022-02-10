@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/react-tasks-manager/static/css/main.fc68b96b.css",
-    "main.js": "/react-tasks-manager/static/js/main.4bb0cc59.js",
-    "static/js/787.ebc41ba0.chunk.js": "/react-tasks-manager/static/js/787.ebc41ba0.chunk.js",
+    "main.css": "/react-tasks-manager/static/css/main.7c14650c.css",
+    "main.js": "/react-tasks-manager/static/js/main.4f6adb75.js",
+    "static/js/787.0e4aa555.chunk.js": "/react-tasks-manager/static/js/787.0e4aa555.chunk.js",
     "static/media/JohnLoren2.jpg": "/react-tasks-manager/static/media/JohnLoren2.0f7f1d11990cab301e2d.jpg",
     "index.html": "/react-tasks-manager/index.html",
-    "main.fc68b96b.css.map": "/react-tasks-manager/static/css/main.fc68b96b.css.map",
-    "main.4bb0cc59.js.map": "/react-tasks-manager/static/js/main.4bb0cc59.js.map",
-    "787.ebc41ba0.chunk.js.map": "/react-tasks-manager/static/js/787.ebc41ba0.chunk.js.map"
+    "main.7c14650c.css.map": "/react-tasks-manager/static/css/main.7c14650c.css.map",
+    "main.4f6adb75.js.map": "/react-tasks-manager/static/js/main.4f6adb75.js.map",
+    "787.0e4aa555.chunk.js.map": "/react-tasks-manager/static/js/787.0e4aa555.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fc68b96b.css",
-    "static/js/main.4bb0cc59.js"
+    "static/css/main.7c14650c.css",
+    "static/js/main.4f6adb75.js"
   ]
 }
