@@ -19,7 +19,7 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
     const details = [];
 
     if (task.date) {
-        if(task.date.toString() === "2022-02-10") {
+        if(task.date.toString() === "2022-02-11") {
             details.push('Today')
 
         } else {
@@ -301,7 +301,7 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
 
                                     />
                                     :
-                                    <p style={{ fontSize: 18, position: 'absolute', bottom: 25, lineHeight: 1, maxHeight: 40, overflow: 'scroll', color: task.notes? 'inherit' : 'lightgray'}}>{task.notes ? task.notes : 'no notes added'}</p>
+                                    <p style={{ fontSize: 18, position: 'absolute', bottom: 25, lineHeight: 1, maxHeight: 40, overflow: 'scroll', transform: `translate(0%, 50%)`, color: task.notes? 'inherit' : 'lightgray'}}>{task.notes ? task.notes : 'no notes added'}</p>
                                 }
 
 

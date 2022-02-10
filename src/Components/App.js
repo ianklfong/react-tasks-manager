@@ -29,11 +29,6 @@ import TaskForm from './TaskForm';
 //import calendar
 import { Scheduler } from './Calendar';
 
-//import firebase method
-import { collection, doc, getDocs, addDoc, deleteDoc, updateDoc } from 'firebase/firestore';
-import { db, testCollectionRef, listCollectionRef } from '../firebase-config'
-
-
 const MainRow = styled.div`
   height: 100vh;
   overflow: hidden
@@ -48,15 +43,6 @@ function App() {
   }
   const [taskForm, setTaskForm] = useState(false);
 
-  // const handleTaskForm = () => {
-  //   setTaskForm(!taskForm)
-  // }
-
-
-
-
-
-
   // new task input state
   const [newTask, setNewTask] = useState({});
 
@@ -66,7 +52,6 @@ function App() {
   const handleSearchInput = e => {
     setSearchInput(e)
   }
-
 
   // new task form input
   const handleChange = ({ target }) => {
@@ -83,8 +68,6 @@ function App() {
       done: false,
     })
     );
-
-    // console.log(searchInput)
   };
 
   // all tasks data storage
@@ -127,7 +110,6 @@ function App() {
       ...prev,
       id
     ]))
-    // createList(id);
   }
 
   // delete list
@@ -168,7 +150,6 @@ function App() {
         title: title
       }
     }))
-    // updateListTitle(id, title);
   }
 
 
@@ -264,49 +245,6 @@ function App() {
 
   }
 
-  // //database 
-  // // upload to db 
-  // const createTask = async () => {
-  //   await addDoc(testCollectionRef, {
-  //     title: newTask.title,
-  //     notes: newTask.notes || '',
-  //     date: newTask.date || '',
-  //     time: newTask.time || '',
-  //     location: newTask.location || '',
-  //     done: newTask.done,
-  //   });
-  // }
-
-
-  // // database data retrieval
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const data = await getDocs(testCollectionRef);
-  //     setAllTasks(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-  //   }
-  //   getData();
-  //   return;
-  // }, [allTasks])
-
-  // // //upload list detail
-  // const createList = async (id) => {
-  //   await addDoc(listCollectionRef, {
-  //     list: lists[id].title
-  //   });
-  // }
-
-
-  // //update database details
-  // const updateListTitle = async (id, title) => {
-  //   const allTasksDoc = doc(db, "list", id);
-  //   const newFields = {
-  //     lists: lists[id].title,
-  //   }
-  //   await updateDoc(newFields, allTasksDoc)
-  // }
-
-
-
   //submit new task
   const handleSubmitTask = list => {
     // put new task into allTasks state
@@ -363,9 +301,6 @@ function App() {
 
     // empty the value of newTask
     setNewTask({});
-    //database - add new items to db
-    // createTask();
-    // console.log(AllTaskList)
   }
 
   // remove tasks marked as done
@@ -399,7 +334,6 @@ function App() {
   }
   // remove task individually
   const handleRemoveTask = taskId => {
-    // const newArr = lists['all-tasks'].taskIds.slice();
 
     for (let key in lists) {
       let newIds = lists[key].taskIds.filter(task => allTasks[task].id !== taskId);
@@ -448,74 +382,9 @@ function App() {
     $("#addBtnMobile").toggleClass("active")
 
     setTaskForm(!taskForm)
-    console.log(allTasks)
+    // console.log(allTasks)
   }
 
-  // Object.keys(allTasks) =>  [taskId1, taskId2]
-
-  //   // fetch all tasks data
-  //   useEffect(() => {
-  //     if (Object.keys(allTasks).length === 0) {
-
-  //       // fetch data from local storage
-  //       const data = localStorage.getItem('Tasks');
-  //       // add the parsed data to allTasks
-  //       setAllTasks(JSON.parse(data));
-  //     }
-  //   // only fetch on page loaded
-  // }, [])
-
-  // // fetch all tasks list data
-  // useEffect(() => {
-
-  //   if (lists['all-tasks'].taskIds.length === 0) {
-
-  //     // fetch data from local storage
-  //     const data = localStorage.getItem('Lists');
-  //     if(data.length !== 0) {
-
-  //     // add the parsed data to allTasks
-  //     setLists(JSON.parse(data));
-  //     }
-  //     // only fetch on page loaded
-  //   }
-  // }, [])
-
-  //   // fetch all tasks list data
-  //   useEffect(() => {
-
-  //     if (listOrder.length === 0) {
-  //       // fetch data from local storage
-  //       const data = localStorage.getItem('ListOrder');
-  //       if(data.length !== 0) {
-
-  //         // add the parsed data to allTasks
-  //         setListOrder(JSON.parse(data));
-  //       }
-  
-  //       // only fetch on page loaded
-  //     }
-  //   }, [])
-
-
-  //   // store all tasks data
-  // 	useEffect(() => {
-  // 		localStorage.setItem('Tasks', JSON.stringify(allTasks))
-  // 	}, [allTasks])
-
-  //   // store all tasks list data
-  // 	useEffect(() => {
-  // 		localStorage.setItem('Lists', JSON.stringify(lists))
-  // 		localStorage.setItem('Tasks', JSON.stringify(allTasks))
-
-  // 	}, [lists])
-
-
-  // 	useEffect(() => {
-  // 		localStorage.setItem('ListOrder', JSON.stringify(listOrder))
-  // 	}, [listOrder])
-
-  
   const [dark, setDark] = useState(false);
 
   const handleDark = () => {
@@ -559,7 +428,6 @@ function App() {
           <SideBar 
             dark={dark} 
             handleDark={handleDark} 
-            // sizeChange={sizeChange} 
             handleSidebar={handleSidebar}
           />
 
@@ -578,7 +446,6 @@ function App() {
                 handleRemoveTask={handleRemoveTask}
                 searchInput={searchInput}
                 handleSearchInput={handleSearchInput}
-                // fontSize={fontSize}
                 sidebar={sidebar}
                 taskForm={taskForm}
                 handleEditListTitle={handleEditListTitle}
@@ -600,8 +467,9 @@ function App() {
 
 
             <Scheduler
-            allTasks={allTasks}
+              allTasks={allTasks}
             />
+            
             </div>
 
 
@@ -615,13 +483,6 @@ function App() {
             lists={lists}
             handleToggleForm={handleToggleForm}
           />
-
-
-
-
-
-
-
 
         </MainRow>
 

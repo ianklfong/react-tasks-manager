@@ -73,7 +73,7 @@ let OverviewText = styled.div`
     top: 50%;
     left:50%;
     position: absolute; 
-    transition: 1s;
+    // transition: 1s;
 `
 const flexFont = {
     textAlign: 'center',
@@ -90,7 +90,6 @@ const d = new Date();
 let date = d.getDate();
 let day = weekday[d.getDay()];
 
-
 function Overview({lists, onDragEnd, allTasks, handleRemoveDone, handleEditTask, handleToggleDone, handleRemoveTask, listOrder, searchItems, searchInput, searchResults, handleSearchInput, sidebar, taskForm, handleEditListTitle }) {
     
     const [fontSize, setFontSize] = useState(4);
@@ -100,7 +99,7 @@ function Overview({lists, onDragEnd, allTasks, handleRemoveDone, handleEditTask,
         if(sidebar === false && taskForm === false) {
             // set the font size as 2.5
             setFontSize(4.2)
-            console.log(fontSize)
+            // console.log(fontSize)
 
             return;
         }
@@ -126,7 +125,7 @@ function Overview({lists, onDragEnd, allTasks, handleRemoveDone, handleEditTask,
     const [today, setToday] = useState(0)
 
     useEffect(() => {
-        const todayTasks = lists['all-tasks'].taskIds.slice().filter(task => allTasks[task].date === "2022-02-10").length
+        const todayTasks = lists['all-tasks'].taskIds.slice().filter(task => allTasks[task].date === '2022-02-11').length
         setToday(todayTasks)
 
     }, [allTasks])
@@ -202,7 +201,7 @@ function Overview({lists, onDragEnd, allTasks, handleRemoveDone, handleEditTask,
                                     {/* tasks left */}
                                     <OverviewText >
                                     {today === 0 ?
-                                        <p style={{fontSize: `${fontSize/ 3}vw`, transition: '1s'}}>You haven't <br/>got any task <br/>today</p>
+                                        <p style={{fontSize: `${fontSize/ 3}vw`, transition: '1s'}}>Wooo !!<br/>No task <br/>today</p>
 
                                         :
                                         <TodayTasks today={today} fontSize={fontSize}/>

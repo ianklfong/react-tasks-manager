@@ -66,7 +66,7 @@ import { useEffect } from 'react';
                         <label htmlFor="notes">Notes</label>
                         <textarea
                             className="mb-4"
-                            maxLength="30"
+                            // maxLength="30"
                             name="notes"
                             id="notes"
                             cols="30"

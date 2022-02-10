@@ -145,7 +145,7 @@ function TaskColumn({ list, index, allTasks, handleEditListTitle, handleDeleteLi
                                 style={{
                                     padding: 8,
                                     overflow: 'scroll',
-                                    maxHeight: 400
+                                    maxHeight: 600
                                 }}
                                 ref={provided.innerRef}
                         >

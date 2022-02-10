@@ -17,7 +17,7 @@ export default function TasksNumber ({ today, fontSize}){
             You've got
         </p>
             
-        <p style={style} class="overview-num">{today}</p>
+        <p style={style} className="overview-num">{today}</p>
         
         {today === 1 ?
         

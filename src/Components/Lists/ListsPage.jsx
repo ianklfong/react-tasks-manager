@@ -67,7 +67,7 @@ function ListsPage({ lists, listOrder, onDragEnd, allTasks, handleAddList, handl
     return (
         <div 
             className="col-12"
-            style={{height: "100vh",
+            style={{height: "90vh",
                     width: "100%",
                     padding: 0,
                     minHeight: 850,

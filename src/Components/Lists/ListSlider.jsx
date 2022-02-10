@@ -62,7 +62,7 @@ function ListSlider({ searchInput, lists, listOrder, onDragEnd, allTasks, handle
 
             {/* task lists contatiner */}
             <div 
-                className="slider-inner pt-md-4 ps-sm-4">
+                className="slider-inner pt-md-1 ps-sm-4">
 
 
                 <DragDropContext

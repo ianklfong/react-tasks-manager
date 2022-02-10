@@ -20,7 +20,7 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask}
     const details = [];
 
     if (task.date) {
-        if(task.date === "2022-02-10") {
+        if(task.date === "2022-02-11") {
             details.push('Today')
 
         } else {

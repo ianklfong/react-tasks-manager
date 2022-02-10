@@ -14,8 +14,12 @@
   background-image: url('./asset/JohnLoren2.jpg');
 }
 
-
 /* Universal style */
+
+.rbc-toolbar button {
+  border: none !important;
+  border-radius: 0 !important;
+}
 
 ::-webkit-scrollbar { /* hide scollbar */
   display: none;
@@ -113,6 +117,51 @@ main {
   display: none;
   opacity: 0;
   transition: 1s
+}
+
+/* calendar styling */
+.rbc-today{
+
+  background: #efffe7 !important;
+  /* background: #70bbae !important; */
+}
+
+.rbc-event, .rbc-day-slot .rbc-background-event{
+  background: rgb(153, 201, 130) !important;
+  box-shadow: 0px 1px 1.5px rgba(0, 0, 0, 0.1) !important; 
+
+  /* background: linear-gradient(270deg, #A5D9B7 -12.42%, #73BD8C 31.44%); */
+}
+
+.rbc-toolbar button:active, .rbc-toolbar button.rbc-active {
+    background-color: #e6e6e6 !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+
+}
+
+
+.rbc-agenda-view table.rbc-agenda-table {
+  border: none !important;
+}
+
+.rbc-agenda-view table.rbc-agenda-table tbody > tr > td + td {
+  border: none !important;
+}
+
+.rbc-agenda-date-cell {
+  border-right: 1px solid #ddd;
+}
+/* .rbc-agenda-view table.rbc-agenda-table thead > tr > th {
+  border:
+} */
+
+.rbc-header {
+  border-left: 0px !important;
+}
+
+.rbc-event-content{
+  color: rgb(255, 255, 255);
 }
 
 @media only screen and (max-width: 991px) {
@@ -431,8 +480,8 @@ p.dark, h3.dark, h4.dark, input.dark, label.dark, .iZPNWi.dark, select.dark, .re
 }
 
 .removeDone.dark:hover{
-color:white;
-transition:0.5s;
+  color:white;
+  transition:0.5s;
 }
 
 .nav-icon1.dark path{
@@ -455,6 +504,13 @@ transition:0.5s;
  background: linear-gradient(181.98deg, rgba(36, 37, 37, 0.9) 18.3%, rgba(246, 247, 248, 0.43) 98.38%);
 }
 
+#calendar {
+  box-shadow: 0px 1px 1.5px rgba(0, 0, 0, 0.1); 
+}
+
+/* .calendar {
+  
+} */
 
 @media only screen and (max-width: 1400px) {
   .overview-num {
