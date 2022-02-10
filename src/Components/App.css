@@ -139,7 +139,7 @@ main {
   width: 290px;
   height: 100vh;
   color: rgb(245, 245, 245);
-  background: white;
+  background: white ;
   /* background:#c7c7c7; */
   /* background:#617362; */
   filter: drop-shadow(0.5px 0px 1px rgba(0, 0, 0, 0.25));
@@ -150,6 +150,14 @@ main {
     width: 200px;
   }
 }
+
+/* .switch::before{
+  content: '';
+  position: absolute;
+  height:15px;
+  width:15px;
+  border-radius: 50%;
+} */
 
 #sidebar.collapsed { /* sidebar show */
   width: 65px;
@@ -326,15 +334,15 @@ nav p.hidden {
 
 .slider {
   /* position: absolute; */
-  
+  position: relative;
   overflow: hidden;
 }
 
 .slider-inner {
-  /* position: absolute; */
-  /* top: 0;
-  left: 0; */
-  /* display: grid; */
+  position: absolute;
+  top: 0;
+  left: 0; 
+  /* display: grid;
   /* grid-template-columns: repeat(7, 1fr); */
   /* pointer-events: none; */
   /* flex-direction: row; */
@@ -416,4 +424,44 @@ textarea {
   max-height: 100px;
   width: 100%;
   border: 0;
+}
+
+p.dark, h3.dark, h4.dark, input.dark, label.dark, .iZPNWi.dark, select.dark, .removeDone.dark {
+  color: #ccc;
+}
+
+.removeDone.dark:hover{
+color:white;
+transition:0.5s;
+}
+
+.nav-icon1.dark path{
+  stroke: #CCC !important;
+}
+
+.nav-icon2.dark path{
+  fill: #CCC !important;
+}
+
+ #Home.dark,  #Lists.dark, .Gohid.dark {
+  background: #18191a;
+}
+
+#sidebar.dark, #taskForm.dark, .bAqmpU.dark, .pinned-list.dark, #search.dark, .searchBar.dark, textarea.dark, select.dark{
+  background: #242526 !important;
+}
+
+.task-list.dark{
+ background: linear-gradient(181.98deg, rgba(36, 37, 37, 0.9) 18.3%, rgba(246, 247, 248, 0.43) 98.38%);
+}
+
+
+@media only screen and (max-width: 1400px) {
+  .overview-num {
+    font-size: 3vw !important;
+  }
+
+  .overview-text {
+    font-size: 1.3vw !important;
+  }
 }

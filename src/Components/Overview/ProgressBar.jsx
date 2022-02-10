@@ -20,8 +20,18 @@ const Progress = styled.div`
 `
 
 
-export default function ProgressBar ({ allTasks, list }){
+export default function ProgressBar ({ allTasks, list, handleEditListTitle }){
 
+
+    const [title, setTitle] = useState(list.title)
+
+    const handleChange = e => {
+        setTitle(e.target.value)
+        handleEditListTitle(list.id, e.target.value)
+    }
+
+
+    const [edit, setEdit] = useState(false);
 
     const [percentage, setPercentage] = useState(0)
 
@@ -37,13 +47,43 @@ export default function ProgressBar ({ allTasks, list }){
 
         setPercentage(Math.floor(doneTasks / all * 100))
 
-
     }, [allTasks, list])
 
         
     return(
-        <div className='mb-3'>
-            <h4 className='mb-3 ms-2'>{list.title}</h4>
+        <div className='mb-3' style={{position: 'relative'}}>
+
+
+
+{edit ?
+                        <input 
+                            value={title}
+                            name="title"
+                            className='mb-3'
+                            onChange={handleChange}
+                            onBlur={() => setEdit(!edit)}
+                            style={{
+                                fontSize: 23,
+                                // marginBottom: ".5rem",
+                                lineHeight: 0,
+                                background: 'lightgrey',
+                                border: 0,
+                                fontWeight: 600,
+                                // position: 'absolute',
+                                // top: -5,
+                                // left: -2
+                            }}
+                        />
+                    :
+                    <h4 onClick={()=> {setEdit(!edit)}} className='mb-3 ms-2'>{list.title}</h4>
+
+
+
+            }
+
+
+
+
             <div style={{position: 'relative', display: 'flex', height: 25}}>
             {list.taskIds.length === 0 ?
                 <p className='ms-2' style={{fontWeight: 200}}>No task assigned</p>

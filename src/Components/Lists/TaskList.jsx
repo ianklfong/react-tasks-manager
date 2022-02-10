@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import TaskCard from './TaskCard';
+
+
+import Task from './Task'
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import styled from 'styled-components';
@@ -8,6 +10,7 @@ import styled from 'styled-components';
 const Column = styled.div`
     width: 315px;
     display: inline-block;
+    // margin-left: -30px
 `
 
 const TaskList = styled.div`
@@ -18,7 +21,7 @@ const TaskList = styled.div`
     border-bottom-rightRadius: 3
 `
 
-function TaskColumn({ list, index, allTasks, handleEditListTitle, handleDeleteList }) {
+function TaskColumn({ list, index, allTasks, handleEditListTitle, handleDeleteList, handleToggleDone, handleRemoveTask, handleEditTask, isDragDisabled}) {
 
 
     const [title, setTitle] = useState(list.title)
@@ -36,11 +39,12 @@ function TaskColumn({ list, index, allTasks, handleEditListTitle, handleDeleteLi
         <Draggable
             draggableId={list.id.toString()}
             index={index}
+            isDragDisabled={isDragDisabled}
         >
             {provided => (
 
                 <Column 
-                    className="pt-md-5 me-3"
+                    className="pt-md-5 me-3 ms-sm-0"
                     {...provided.draggableProps}
                     ref={provided.innerRef}
                 >
@@ -113,7 +117,7 @@ function TaskColumn({ list, index, allTasks, handleEditListTitle, handleDeleteLi
                             }}
                         >
                             {/* remove list icon */}
-                            {list.taskIds.length === 0 && <svg 
+                            {list.taskIds.length === 0 && !isDragDisabled && <svg 
                                 type='button'
                                 onClick={() => {handleDeleteList(list.id)}}
                                 style={{position: "absolute", right: 15, top: 15}} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -149,7 +153,15 @@ function TaskColumn({ list, index, allTasks, handleEditListTitle, handleDeleteLi
                             {/* Task */}
                             {/* <TaskCard task={allTasks['task-1']}/> */}
                             {list.taskIds.map((id, index) => 
-                            <TaskCard index={index} key={allTasks[id].id} task={allTasks[id]}/>
+                            <Task
+                                index={index} 
+                                key={allTasks[id].id} 
+                                task={allTasks[id]}
+
+                                handleEditTask={handleEditTask}
+                                handleToggleDone={handleToggleDone}
+                                handleRemoveTask={handleRemoveTask}
+                            />
 
                             )}
 

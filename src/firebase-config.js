@@ -13,7 +13,7 @@ import { collection, doc, getDocs, addDoc, deleteDoc } from 'firebase/firestore'
 //     measurementId: "G-8986CGXWKJ"
 //   };
 
-// Your web app's Firebase configuration
+// // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCDqzTYU4Y-CebtPmIYFltiaqNFkNgphiY",
   authDomain: "task-manager-f546f.firebaseapp.com",

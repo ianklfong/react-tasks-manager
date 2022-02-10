@@ -3,6 +3,7 @@ import { Draggable } from 'react-beautiful-dnd';
 
 import $ from 'jquery'
 import styled from 'styled-components';
+import { useEffect } from 'react';
 
 
 const TaskCard = styled.div`
@@ -14,12 +15,12 @@ const TaskCard = styled.div`
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
 `
 
-function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask, isDragDisabled }) {
+function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask}) {
 
     const details = [];
 
     if (task.date) {
-        if(task.date.toString() === "2022-02-10") {
+        if(task.date === "2022-02-10") {
             details.push('Today')
 
         } else {
@@ -35,6 +36,7 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
 
     const [updateTask, setUpdateTask] = useState(task);
     // inputing form
+
 
 
 
@@ -79,7 +81,6 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
         <Draggable
             draggableId={task.id.toString()}
             index={index}
-            isDragDisabled={isDragDisabled}
         >
             {(provided, snapshot) => (
                 <TaskCard
@@ -99,7 +100,7 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                                 // onClick={() => {task.done = !task.done}}
                                 className="m-auto d-block fas fa-check p-1"
                                 style={{
-                                    fontSize: 16,
+                                    fontSize: 12,
                                     color: task.done ? '#70bbae' : 'lightGrey',
                                 }}
                             >
@@ -108,10 +109,10 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
 
                         {/* Event title */}
                         <div
-                            className="col "
-                            style={{ overflow: 'hidden', position: 'relative', minHeight: 33 }}
+                            className="col-9 "
+                            style={{ overflow: 'hidden', position: 'relative', minHeight: 33}}
                             type="button"
-                            data-bs-toggle="collapse" data-bs-target={"#all" + task.id}
+                            data-bs-toggle="collapse" data-bs-target={"#list" + task.id}
                             aria-expanded="false" aria-controls="collapseTwo"
 
                         >
@@ -119,7 +120,7 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                             {edit ?
                                 <input
                                     className='w-100'
-                                    style={{ fontSize: 22, lineHeight: 0, background: 'rgb(240, 240, 240)', border: 0, height: 33, padding: 0, position: 'absolute', top: 0 }}
+                                    style={{ fontSize: 16, lineHeight: 0, background: 'rgb(240, 240, 240)', border: 0, height: 33, padding: 0, position: 'absolute', top: 0 }}
                                     type="text"
                                     placeholder='Title'
                                     name="title"
@@ -127,10 +128,11 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                                     maxLength="20"
                                     onChange={handleChange}
                                 /> :
-                                <p
+                                <p  className='my-auto'
                                     // onClick={() => setEdit(!edit)}
                                     style={{
-                                        fontSize: 22,
+                                        position: 'absolute', top: 5, 
+                                        fontSize: 16,
                                         textDecoration: task.done ? "line-through" : "none",
                                         color: task.done ? "lightgrey" : "inherit"
                                     }}
@@ -150,7 +152,6 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                                 className="col-1  d-flex align-items-center justify-content-center"
                                 onClick={handleSubmit}
                             >
-                                {/* <button className="col-1 d-flex align-items-center justify-content-center" > */}
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M15.8067 3.52668L12.4733 0.193344C12.411 0.131557 12.3372 0.0826733 12.2559 0.0494969C12.1747 0.0163206 12.0877 -0.000496119 12 1.11429e-05H1.33333C0.979711 1.11429e-05 0.640572 0.140487 0.390524 0.390535C0.140476 0.640583 0 0.979722 0 1.33334V14.6667C0 15.0203 0.140476 15.3594 0.390524 15.6095C0.640572 15.8595 0.979711 16 1.33333 16H14.6667C15.0203 16 15.3594 15.8595 15.6095 15.6095C15.8595 15.3594 16 15.0203 16 14.6667V4.00001C16.0005 3.91227 15.9837 3.8253 15.9505 3.74407C15.9173 3.66285 15.8684 3.58897 15.8067 3.52668ZM5.33333 1.33334H10.6667V4.00001H5.33333V1.33334ZM10.6667 14.6667H5.33333V9.33334H10.6667V14.6667ZM12 14.6667V9.33334C12 8.97972 11.8595 8.64058 11.6095 8.39053C11.3594 8.14048 11.0203 8.00001 10.6667 8.00001H5.33333C4.97971 8.00001 4.64057 8.14048 4.39052 8.39053C4.14047 8.64058 4 8.97972 4 9.33334V14.6667H1.33333V1.33334H4V4.00001C4 4.35363 4.14047 4.69277 4.39052 4.94282C4.64057 5.19286 4.97971 5.33334 5.33333 5.33334H10.6667C11.0203 5.33334 11.3594 5.19286 11.6095 4.94282C11.8595 4.69277 12 4.35363 12 4.00001V1.60668L14.6667 4.27334V14.6667H12Z" fill="black" />
                                 </svg>
@@ -162,7 +163,7 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                                 className="col-1  d-flex align-items-center justify-content-center"
                                 onClick={() => {
                                     setEdit(!edit)
-                                    $(`#all${task.id}`).addClass("show");
+                                    $(`#list${task.id}`).addClass("show");
                                 }
 
                                 }
@@ -221,7 +222,7 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
 
                                     <input
                                         className='w-100'
-                                        style={{ fontSize: 18, lineHeight: 0, background: 'rgb(240, 240, 240)', border: 0, height: 27, padding: 0, position: 'absolute', top: 0 }}
+                                        style={{ fontSize: 12, lineHeight: 0, background: 'rgb(240, 240, 240)', border: 0, height: 27, padding: 0, position: 'absolute', top: 0 }}
                                         type="date"
                                         placeholder='date'
                                         name="date"
@@ -230,13 +231,13 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                                         onChange={handleChange}
                                     />
                                 </div>
-                                <p style={{ fontSize: 18 }}>&nbsp;‧&nbsp;</p>
+                                <p style={{ fontSize: 12 }}>&nbsp;‧&nbsp;</p>
 
                                 <div className='d-inline' style={{ position: 'relative', width: 47.5 }}>
 
                                     <input
                                         className='w-100'
-                                        style={{ fontSize: 18, lineHeight: 0, background: 'rgb(240, 240, 240)', border: 0, height: 27, padding: 0, position: 'absolute', top: 0 }}
+                                        style={{ fontSize: 12, lineHeight: 0, background: 'rgb(240, 240, 240)', border: 0, height: 27, padding: 0, position: 'absolute', top: 0 }}
                                         type="time"
                                         placeholder='time'
                                         name="time"
@@ -245,13 +246,13 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                                         onChange={handleChange}
                                     />
                                 </div>
-                                <p style={{ fontSize: 18 }}>&nbsp;‧&nbsp;</p>
+                                <p style={{ fontSize: 12 }}>&nbsp;‧&nbsp;</p>
 
                                 <div className='w-50 d-inline' style={{ position: 'relative' }}>
 
                                     <input
                                         className='w-100'
-                                        style={{ fontSize: 18, lineHeight: 0, background: 'rgb(240, 240, 240)', border: 0, height: 27, padding: 0, position: 'absolute', top: 0 }}
+                                        style={{ fontSize: 12, lineHeight: 0, background: 'rgb(240, 240, 240)', border: 0, height: 27, padding: 0, position: 'absolute', top: 0 }}
                                         type="location"
                                         placeholder='location'
                                         name="location"
@@ -268,7 +269,7 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                                 }}
                             >
 
-                                <p className="text-secondary" style={{ fontSize: 18 }}>
+                                <p className="text-secondary" style={{ fontSize: 12 }}>
                                     {details.join(' ‧ ')}
                                 </p>
 
@@ -279,7 +280,7 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                     {/* end of lower row */}
 
                     {/* drop down notes */}
-                    <div id={"all" + task.id} className="accordion-collapse collapse"
+                    <div id={"list" + task.id} className="accordion-collapse collapse"
                         aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                         <div className="accordion-body row">
                             <div
@@ -297,11 +298,11 @@ function Task({ task, index, handleEditTask, handleToggleDone, handleRemoveTask,
                                         value={updateTask.notes}
                                         placeholder='Notes...'
                                         onChange={handleChange}
-                                        style={{ fontSize: 18, lineHeight: 0, background: 'rgb(240, 240, 240)', border: 0, height: 27, padding: 0, position: 'absolute', top: 2 }}
+                                        style={{ fontSize: 12, lineHeight: 0, background: 'rgb(240, 240, 240)', border: 0, height: 27, padding: 0, position: 'absolute', top: 2 }}
 
                                     />
                                     :
-                                    <p style={{ fontSize: 18, position: 'absolute', bottom: 25, lineHeight: 1, maxHeight: 40, overflow: 'scroll', color: task.notes? 'inherit' : 'lightgray'}}>{task.notes ? task.notes : 'no notes added'}</p>
+                                    <p style={{ fontSize: 12, position: 'absolute', bottom: 25, lineHeight: 1, maxHeight: 40, overflow: 'scroll', color: task.notes? 'inherit' : 'lightgray'}}>{task.notes ? task.notes : 'no notes added'}</p>
                                 }
 
 

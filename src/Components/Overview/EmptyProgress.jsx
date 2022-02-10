@@ -4,8 +4,19 @@ export default function EmptyProgress (){
 
     return(
 
-        <div className="w-100" style={{position: 'absolute', top: '50%', left: '50%', transform: `translate(-50%, -50%)`, display: 'flex', flexDirection: 'column', alignItems: 'center ',justifyContent: 'center'}}>
-        <p className='mb-5' style={{fontSize: 25}}>It's time to start your progress</p>
+        <div 
+            className="w-100" 
+            style={{
+                position: 'absolute', 
+                top: '50%', 
+                left: '50%', 
+                transform: `translate(-50%, -50%)`, 
+                display: 'flex', flexDirection: 'column', 
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}
+            >
+        <p className='mb-5 text-center' style={{fontSize: 25}}>It's time to start your progress</p>
         <svg  width="314" height="240" viewBox="0 0 314 240" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clipPath="url(#clip0_492_6948)">
             <path d="M23.5618 240C19.1602 240.004 14.8646 238.65 11.2619 236.121C7.65917 233.593 4.92498 230.015 3.43282 225.875C0.636264 218.086 -12.757 174.338 42.7306 136.904C97.1696 100.177 74.5297 48.7814 143.612 39.0265C215.502 34.8334 225.761 87.3746 257.615 133.352C276.079 160.003 310.769 178.855 313.42 211.083C316.812 231.634 304.727 240.008 292.693 240.001C225.41 239.956 23.5618 240 23.5618 240Z" fill="#F3F5FD"/>

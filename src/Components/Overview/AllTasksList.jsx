@@ -16,7 +16,6 @@ function AllTaskList({ lists, onDragEnd, allTasks, handleEditTask, handleToggleD
 
 
     useEffect(() => {
-
         if ( searchInput !== ''){
             const filteredData = lists['all-tasks'].taskIds.slice().filter(taskIds => 
               {
@@ -24,39 +23,11 @@ function AllTaskList({ lists, onDragEnd, allTasks, handleEditTask, handleToggleD
               // Check if this string contains the search input we typed in the search bar. It also converts it to lowercase to ensure that if the user types the term in uppercase, it converts the string to lowercase to make the search more efficient.
               return allTasks[taskIds].title.toLowerCase().includes(searchInput.toLowerCase())
               })
+
               setSearchResults(filteredData);
-            }
+            } else {return}
         // console.log('result'+ searchResults)
     }, [searchInput])
-
-    useEffect(() => {
-        console.log(searchResults)
-    })
-    // const [searchInput, setSearchInput] = useState('');
-    // // The new state of the filtered data
-    // const [searchResults, setSearchResults] = useState([]);
-  
-  
-    // const handleSearchInput = e => {
-    //   setSearchInput(e.target.value)
-    // }
-  
-    // const searchItems = (term) => {
-    //   setSearchInput(term);
-    //   if ( searchInput !== ''){
-    //     const filteredData = lists['all-tasks'].taskIds.slice().filter(taskIds => 
-    //       {
-    //         // console.log(allTasks[taskIds].title);
-    //       // Check if this string contains the search input we typed in the search bar. It also converts it to lowercase to ensure that if the user types the term in uppercase, it converts the string to lowercase to make the search more efficient.
-    //       return allTasks[taskIds].title.toLowerCase().includes(searchInput.toLowerCase())
-    //       })
-    //       setSearchResults(filteredData);
-    //       // setSearchInput('')
-    //       // console.log('result: '+searchResults)
-    //   } else{
-    //     return;
-    //   }
-    // }
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
@@ -76,20 +47,13 @@ function AllTaskList({ lists, onDragEnd, allTasks, handleEditTask, handleToggleD
                                 ref={provided.innerRef}
                             // isDraggingOver={snapshot.isDraggingOver}    
                             >
-                                {/* {Object.keys(allTasks).length > 0 && lists['all-tasks'].taskIds.map((taskId, index) =>
-                                    <Task
-                                        key={allTasks[taskId].id}
-                                        index={index}
-                                        task={allTasks[taskId]}
-                                        handleEditTask={handleEditTask}
-                                        handleToggleDone={handleToggleDone}
-                                        handleRemoveTask={handleRemoveTask}
-                                    />)
-                                } */}
+                                
+               
                                 {searchInput.length >= 1 ? (
-                                        // <>123</>
+                                    searchResults.length === 0 ?
+                                    <p className='text-center mt-5' style={{fontSize: 30}}>No Matched Result Task</p>
+                                    :
                                     searchResults.map((taskId, index) => {
-                                            // console.log('result:'+taskId);
                                                 return <Task
                                                     key={allTasks[taskId].id}
                                                     index={index}
@@ -97,6 +61,7 @@ function AllTaskList({ lists, onDragEnd, allTasks, handleEditTask, handleToggleD
                                                     handleEditTask={handleEditTask}
                                                     handleToggleDone={handleToggleDone}
                                                     handleRemoveTask={handleRemoveTask}
+                                                    isDragDisabled={true}
                                                 />
                                     })
                                 ) : (
@@ -109,6 +74,7 @@ function AllTaskList({ lists, onDragEnd, allTasks, handleEditTask, handleToggleD
                                             handleEditTask={handleEditTask}
                                             handleToggleDone={handleToggleDone}
                                             handleRemoveTask={handleRemoveTask}
+                                            isDragDisabled={false}
                                         />
                                     ))
                                 }

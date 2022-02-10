@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+import useLocalStorage from "use-local-storage"
+
 // import JQuery
 import $ from 'jquery';
 // import uuid
@@ -24,6 +26,8 @@ import Overview from './Overview/Overview';
 import ListsPage from './Lists/ListsPage';
 // impot add Task Form
 import TaskForm from './TaskForm';
+//import calendar
+import { Scheduler } from './Calendar';
 
 //import firebase method
 import { collection, doc, getDocs, addDoc, deleteDoc, updateDoc } from 'firebase/firestore';
@@ -36,6 +40,22 @@ const MainRow = styled.div`
 `
 
 function App() {
+
+
+  const [sidebar, setSidebar] = useState(false);
+  const handleSidebar = () => {
+    setSidebar(!sidebar)
+  }
+  const [taskForm, setTaskForm] = useState(false);
+
+  // const handleTaskForm = () => {
+  //   setTaskForm(!taskForm)
+  // }
+
+
+
+
+
 
   // new task input state
   const [newTask, setNewTask] = useState({});
@@ -64,14 +84,14 @@ function App() {
     })
     );
 
-    console.log(searchInput)
+    // console.log(searchInput)
   };
 
   // all tasks data storage
-  const [allTasks, setAllTasks] = useState({});
+  const [allTasks, setAllTasks] = useLocalStorage('allTasks', {});
 
   // task lists storage
-  const [lists, setLists] = useState({
+  const [lists, setLists] = useLocalStorage('lists', {
     // storing all tasks order for section 1 - Overview
     'all-tasks': {
       // list id, also as the list key when storing in the lists
@@ -83,7 +103,7 @@ function App() {
   })
 
   // task list order (for drag and drop)
-  const [listOrder, setListOrder] = useState([])
+  const [listOrder, setListOrder] = useLocalStorage('listOrder', [])
 
 
   // add new list
@@ -107,7 +127,7 @@ function App() {
       ...prev,
       id
     ]))
-    createList(id);
+    // createList(id);
   }
 
   // delete list
@@ -148,7 +168,7 @@ function App() {
         title: title
       }
     }))
-    updateListTitle(id, title);
+    // updateListTitle(id, title);
   }
 
 
@@ -244,46 +264,46 @@ function App() {
 
   }
 
-  //database 
-  // upload to db 
-  const createTask = async () => {
-    await addDoc(testCollectionRef, {
-      title: newTask.title,
-      notes: newTask.notes || '',
-      date: newTask.date || '',
-      time: newTask.time || '',
-      location: newTask.location || '',
-      done: newTask.done,
-    });
-  }
+  // //database 
+  // // upload to db 
+  // const createTask = async () => {
+  //   await addDoc(testCollectionRef, {
+  //     title: newTask.title,
+  //     notes: newTask.notes || '',
+  //     date: newTask.date || '',
+  //     time: newTask.time || '',
+  //     location: newTask.location || '',
+  //     done: newTask.done,
+  //   });
+  // }
 
 
-  // database data retrieval
-  useEffect(() => {
-    const getData = async () => {
-      const data = await getDocs(testCollectionRef);
-      setAllTasks(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-    }
-    getData();
-    return;
-  }, [])
+  // // database data retrieval
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const data = await getDocs(testCollectionRef);
+  //     setAllTasks(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+  //   }
+  //   getData();
+  //   return;
+  // }, [allTasks])
 
-  // //upload list detail
-  const createList = async (id) => {
-    await addDoc(listCollectionRef, {
-      list: lists[id].title
-    });
-  }
+  // // //upload list detail
+  // const createList = async (id) => {
+  //   await addDoc(listCollectionRef, {
+  //     list: lists[id].title
+  //   });
+  // }
 
 
-  //update database details
-  const updateListTitle = async (id, title) => {
-    const allTasksDoc = doc(db, "list", id);
-    const newFields = {
-      lists: lists[id].title,
-    }
-    await updateDoc(newFields, allTasksDoc)
-  }
+  // //update database details
+  // const updateListTitle = async (id, title) => {
+  //   const allTasksDoc = doc(db, "list", id);
+  //   const newFields = {
+  //     lists: lists[id].title,
+  //   }
+  //   await updateDoc(newFields, allTasksDoc)
+  // }
 
 
 
@@ -344,8 +364,8 @@ function App() {
     // empty the value of newTask
     setNewTask({});
     //database - add new items to db
-    createTask();
-    console.log(lists)
+    // createTask();
+    // console.log(AllTaskList)
   }
 
   // remove tasks marked as done
@@ -426,26 +446,56 @@ function App() {
     $("#addBtn").toggleClass("active");
     $(".form-backdrop").toggleClass("active");
     $("#addBtnMobile").toggleClass("active")
+
+    setTaskForm(!taskForm)
+    console.log(allTasks)
   }
 
+  // Object.keys(allTasks) =>  [taskId1, taskId2]
 
   //   // fetch all tasks data
   //   useEffect(() => {
-  //     // fetch data from local storage
-  //     const data = localStorage.getItem('Tasks');
-  //     // add the parsed data to allTasks
-  //     setAllTasks(JSON.parse(data));
+  //     if (Object.keys(allTasks).length === 0) {
+
+  //       // fetch data from local storage
+  //       const data = localStorage.getItem('Tasks');
+  //       // add the parsed data to allTasks
+  //       setAllTasks(JSON.parse(data));
+  //     }
   //   // only fetch on page loaded
   // }, [])
 
   // // fetch all tasks list data
   // useEffect(() => {
+
+  //   if (lists['all-tasks'].taskIds.length === 0) {
+
   //     // fetch data from local storage
   //     const data = localStorage.getItem('Lists');
+  //     if(data.length !== 0) {
+
   //     // add the parsed data to allTasks
   //     setLists(JSON.parse(data));
-  // // only fetch on page loaded
+  //     }
+  //     // only fetch on page loaded
+  //   }
   // }, [])
+
+  //   // fetch all tasks list data
+  //   useEffect(() => {
+
+  //     if (listOrder.length === 0) {
+  //       // fetch data from local storage
+  //       const data = localStorage.getItem('ListOrder');
+  //       if(data.length !== 0) {
+
+  //         // add the parsed data to allTasks
+  //         setListOrder(JSON.parse(data));
+  //       }
+  
+  //       // only fetch on page loaded
+  //     }
+  //   }, [])
 
 
   //   // store all tasks data
@@ -461,18 +511,57 @@ function App() {
   // 	}, [lists])
 
 
+  // 	useEffect(() => {
+  // 		localStorage.setItem('ListOrder', JSON.stringify(listOrder))
+  // 	}, [listOrder])
 
+  
+  const [dark, setDark] = useState(false);
 
+  const handleDark = () => {
+    setDark(!dark);
+    $("p").toggleClass("dark");
+    $('#sidebar').toggleClass('dark');
+    $('.nav-icon1').toggleClass('dark');
+    $('.nav-icon2').toggleClass('dark');
+    $('#Home').toggleClass('dark');
+    $('h3').toggleClass('dark');
+    $('#taskForm').toggleClass('dark');
+    $('.pinned-list').toggleClass('dark');
+    $('.searchBar').toggleClass('dark');
+    $('.bAqmpU').toggleClass('dark');
+    $('input').toggleClass('dark');
+    $('label').toggleClass('dark');
+    $('#Lists').toggleClass('dark');
+    $('h4').toggleClass('dark');
+    $('.iZPNWi').toggleClass('dark');
+    $('textarea').toggleClass('dark');
+    $('select').toggleClass('dark');
+    $('.task-list').toggleClass('dark');
+    $('.removeDone').toggleClass('dark');
+    $('.Gohid').toggleClass('dark');
+    $('#search').toggleId('dark');
+}
 
 
   return (
     <div className="App">
-      <TaskFormToggle handleToggleForm={handleToggleForm} />
-      <MobileNav handleToggleForm={handleToggleForm} />
+      <TaskFormToggle 
+        handleToggleForm={handleToggleForm}
+      />
+      <MobileNav 
+        handleToggleForm={handleToggleForm} 
+        handleSidebar={handleSidebar}
+      />
 
       <div className='container-fluid' style={{ padding: 0, overflow: 'hidden' }}>
         <MainRow className='row'>
-          <SideBar />
+          <SideBar 
+            dark={dark} 
+            handleDark={handleDark} 
+            // sizeChange={sizeChange} 
+            handleSidebar={handleSidebar}
+          />
 
 
           <main className="col">
@@ -488,8 +577,11 @@ function App() {
                 handleToggleDone={handleToggleDone}
                 handleRemoveTask={handleRemoveTask}
                 searchInput={searchInput}
-
                 handleSearchInput={handleSearchInput}
+                // fontSize={fontSize}
+                sidebar={sidebar}
+                taskForm={taskForm}
+                handleEditListTitle={handleEditListTitle}
               />
 
               <ListsPage
@@ -500,10 +592,18 @@ function App() {
                 handleAddList={handleAddList}
                 handleEditListTitle={handleEditListTitle}
                 handleDeleteList={handleDeleteList}
+
+                handleEditTask={handleEditTask}
+                handleToggleDone={handleToggleDone}
+                handleRemoveTask={handleRemoveTask}
               />
 
 
+            <Scheduler
+            allTasks={allTasks}
+            />
             </div>
+
 
           </main>
 
@@ -515,6 +615,7 @@ function App() {
             lists={lists}
             handleToggleForm={handleToggleForm}
           />
+
 
 
 
