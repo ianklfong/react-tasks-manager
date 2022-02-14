@@ -23,7 +23,7 @@ import Main from './Main';
 
 //database
 import { collection, doc, getDocs, addDoc, deleteDoc, updateDoc } from 'firebase/firestore'
-import { testCollectionRef } from '../db'
+import { testCollectionRef, listCollectionRef } from '../db'
 import { db } from '../firebase-config';
 
 
@@ -53,7 +53,8 @@ function App() {
       notes: newTask.notes || '',
       date: newTask.date || '',
       time: newTask.time || '',
-      location: newTask.location || ''
+      location: newTask.location || '',
+      done: newTask.done,
     });
   }
 
@@ -66,13 +67,14 @@ function App() {
 
   // update items 
     const updateDoc = async (id, title, notes, date, time, location) => {
-    const allTasksDoc = doc(db, "task");
+    const allTasksDoc = doc(db, "task", id);
     const newFields = {      
       title: newTask.title || '',
       notes: newTask.notes || '',
       date: newTask.date || '',
       time: newTask.time || '',
-      location: newTask.location || ''
+      location: newTask.location || '',
+      done: newTask.done
 }
     await updateDoc(newFields, allTasksDoc)  
   }
@@ -182,7 +184,7 @@ function App() {
 
   const handleRemoveTask = taskId => {
     delete allTasks[taskId]
-    setAllTasksList(allTasksList.filter(task => task !== taskId));
+    setAllTasksList(allTasksList.filter(task => task !== taskId));    
   }
 
   // edit task detail
