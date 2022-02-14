@@ -1,3 +1,13 @@
+<<<<<<< HEAD:task-manager/src/Components/TaskForm.jsx
+import React,{useState} from 'react';
+
+//database
+import {addDoc } from 'firebase/firestore'
+import {testCollectionRef} from '../db'
+
+
+function TaskForm({ newTask, handleSubmit, handleChange, updateDoc}) {
+=======
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 
@@ -27,6 +37,7 @@ import { useEffect } from 'react';
         }
     }
 
+>>>>>>> cd8e658fa63721a8fcc8d9310098f4ddb6677a50:src/Components/TaskForm.jsx
 
     return (
         <>
@@ -52,6 +63,7 @@ import { useEffect } from 'react';
                                 maxLength="20"
                                 value={newTask.title || ""}
                                 onChange={handleChange}
+                                // onChange={(event) => setNewTitle(event.target.value)}
                                 style={{background: 0}}
                                 required
                             />
@@ -74,6 +86,7 @@ import { useEffect } from 'react';
                             placeholder="Write some notes..."
                             value={newTask.notes || ""}
                             onChange={handleChange}
+                            // onChange={(event) => setNewNotes(event.target.value)}
                         ></textarea>
                         <label htmlFor="lists">Lists</label>
 
@@ -104,6 +117,8 @@ import { useEffect } from 'react';
                             style={{background: 0}}
                             value={newTask.date || ""}
                             onChange={handleChange}
+                            // onChange={(event) => setNewDate(event.target.value)}
+
                         />
 
                         <input

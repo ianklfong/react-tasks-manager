@@ -4,11 +4,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+<<<<<<< HEAD:task-manager/package.json
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/user-event": "^13.5.0",
+    "bootstrap": "^5.1.3",
+    "firebase": "^9.6.6",
+=======
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.1.3",
     "date-fns": "^2.28.0",
+>>>>>>> cd8e658fa63721a8fcc8d9310098f4ddb6677a50:package.json
     "jquery": "^3.6.0",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
@@ -48,6 +55,13 @@
     ]
   },
   "devDependencies": {
+<<<<<<< HEAD:task-manager/package.json
+    "@testing-library/react": "^12.1.2",
+    "jest-dom": "^4.0.0",
+    "react-dev-utils": "^12.0.0",
+    "react-test-renderer": "^17.0.2"
+=======
     "gh-pages": "^3.2.3"
+>>>>>>> cd8e658fa63721a8fcc8d9310098f4ddb6677a50:package.json
   }
 }
